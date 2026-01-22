@@ -10,10 +10,28 @@ const COMPUTE_SHEET_TRIGGER_CELL_NAME_COLUMN = "A"
 const COMPUTE_SHEET_TRIGGER_CELL_DATE_COLUMN = "B"
 const COMPUTE_SHEET_TRIGGER_CELL_ROW = 3
 
+/**
+ * Arrangement of the compute sheet
+ * First column: Name of survey response sheet (linked to the survey form)
+ * Second column: Date of survey (derived from the name of the survey response sheet)
+ * Third column: Number of survey respondents
+ * Fourth column: First dimension in the survey
+ *
+ * Each dimension spans four columns:
+ *
+ *  | Dimension                 | ...
+ *  | Sentiment A | Sentiment B | ...
+ *  | Avg  | SD   | Avg  | SD   | ...
+ *
+ */
+
 const _CS_COLUMN_A = 1
+const _CS_COLUMN_DIMENSIONS_START = 4
 const _CS_COLUMN_REPONDENT_COUNT = 3
 const _CS_COLUMN_SURVEY_DATE = 2
 const _CS_ROW_DATA_START = 3
+
+const _LINES_PER_CHART = 4
 
 /**
  * Create a formula to call a Google Sheets statistic function
@@ -69,6 +87,31 @@ function _createComputeFormulae(dimensionsCount) {
     }
   }
   return formulae
+}
+
+function createChartFromRangeList(sheet, title, ranges) {
+  // Don't forget that the first range is the x-axis labels.
+  if (ranges.length > _LINES_PER_CHART + 1) {
+    throw Error(`Too many ranges to plot on chart: Expected ${_LINES_PER_CHART}, got ${ranges.length}`)
+  }
+  const builder = sheet
+    .newChart()
+    .asLineChart()
+    .setNumHeaders(1)
+    .setOption("series.0.pointShape", "circle")
+    .setOption("series.1.pointShape", "triangle")
+    .setOption("series.2.pointShape", "square")
+    .setOption("series.3.pointShape", "diamond")
+    .setOption('treatLabelsAsText', true)
+    .setPointStyle(Charts.PointStyle.HUGE)
+    .setPosition(1, 1, 0, 0)
+    .setRange(0, 3)
+    .setTitle(title)
+  for (const r in ranges) {
+    builder.addRange(ranges[r])
+  }
+  const chart = builder.build()
+  return (chart)
 }
 
 /**
@@ -148,11 +191,61 @@ function createComputeSheet(name = COMPUTE_SHEET) {
   // Freeze the header rows and first three columns to make scrolling friendly,
   // and protect the sheet to prevent end users from shooting themselves in the foot.
   computeSheet.setFrozenColumns(_CS_COLUMN_REPONDENT_COUNT)
-  computeSheet.setFrozenRows(2)
+  computeSheet.setFrozenRows(_CS_ROW_DATA_START - 1)
   computeSheet
     .protect()
     .setDescription(`Protect "${name}" against accidental modification`)
     .setWarningOnly(true)
+}
+
+/**
+ * Create chart sheets
+ */
+function createChartSheets() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+  const computeSheet = unwrap(spreadsheet.getSheetByName(COMPUTE_SHEET))
+  const surveyTemplateSheet = unwrap(spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET))
+  const dimensionsCount = getSurveyDimensionsCount(surveyTemplateSheet);
+  computeSheet.activate()
+  // For all charts,
+  // the x-axis is the dates of the surveys.
+  const xAxisLabels = `${INTEGERS_TO_COLUMNS[_CS_COLUMN_SURVEY_DATE]}1:${INTEGERS_TO_COLUMNS[_CS_COLUMN_SURVEY_DATE]}`
+  // 0-indexed dimension;
+  // 0 is the first in the dimensions table on the survey template sheet
+  for (var dimension = 0; dimension < dimensionsCount; dimension += _LINES_PER_CHART) {
+    // Ugly modular math to figure out how many dimensions left to plot.
+    var dimensionsOnChart = (dimensionsCount - dimension >= _LINES_PER_CHART) ? _LINES_PER_CHART : dimensionsCount % _LINES_PER_CHART
+    // For each dimension,
+    // and each sentiment,
+    // we have an avg and an SD.
+    var dimensionColumnWidth = getSurveySentimentsCount() * 2
+    const sentiments = Object.keys(SURVEY_SENTIMENTS)
+    for (const s in sentiments) {
+      // For this chunk of _LINES_PER_CHART dimensions,
+      // and for this sentiment
+      // which column do we start with on the compute sheet.
+      var columnStart = _CS_COLUMN_DIMENSIONS_START + dimension * dimensionColumnWidth + s * 2
+      const title = `${sentiments[s]} ${1 + Math.floor(dimension / _LINES_PER_CHART)}`
+      const rangeList = [xAxisLabels].concat(
+        Array.from(
+          // d count the internal dimension within the current chunk of _LINES_PER_CHART dimensions
+          { length: dimensionsOnChart }, (_, d) =>
+          `${INTEGERS_TO_COLUMNS[columnStart + d * dimensionColumnWidth]}1:${INTEGERS_TO_COLUMNS[columnStart + d * dimensionColumnWidth]}`
+        )
+      )
+      const ranges = computeSheet.getRangeList(rangeList).getRanges()
+      Logger.log(`Creating chart "${title}" from ranges ${rangeList}`)
+      const chart = createChartFromRangeList(computeSheet, title, ranges)
+      // Insert the chart on the compute sheet,
+      // then move it to its own sheet.
+      computeSheet.insertChart(chart)
+      spreadsheet.moveChartToObjectSheet(chart)
+        .protect()
+        .setDescription(`Protect "${title}" against accidental modification`)
+        .setName(title)
+        .setWarningOnly(true)
+    }
+  }
 }
 
 /**

@@ -5,13 +5,6 @@
 const SQUAD_HEALTH_CHECK_SHEET_PREFIX = "Squad Health Check"
 
 /**
- * The titles for the perception and trend dimension measurements
- * (and thus graph sheet prefixes).
- */
-const PERCEPTION_TITLE = "Perception"
-const TREND_TITLE = "Trend"
-
-/**
  * An array to map sheet column interger indexes to letters.
  * Covers 1 (A) through 52 (AZ),
  * plus a dummy at 0 because of 0-index vs. 1-index BS.

@@ -123,16 +123,14 @@ function _addDimension(form, data, perceptionSentiments, trendSentiments) {
     .setTitle(dimension)
     .setHelpText(description)
     .setImage(icon)
-  var perception = form.addMultipleChoiceItem()
-  perception.setTitle(dimension + ": " + PERCEPTION_TITLE)
-    .setChoiceValues(perceptionSentiments)
-    .setRequired(true)
-    .showOtherOption(false)
-  var trend = form.addMultipleChoiceItem()
-  trend.setTitle(dimension + ": " + TREND_TITLE)
-    .setChoiceValues(trendSentiments)
-    .setRequired(true)
-    .showOtherOption(false)
+  const sentiments = Object.keys(SURVEY_SENTIMENTS)
+  for (var s in sentiments) {
+    form.addMultipleChoiceItem()
+      .setTitle(dimension + ": " + sentiments[s])
+      .setChoiceValues(SURVEY_SENTIMENTS[sentiments[s]])
+      .setRequired(true)
+      .showOtherOption(false)
+  }
 }
 
 /**
