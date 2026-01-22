@@ -150,7 +150,9 @@ const SURVEY_SENTIMENTS = Object.freeze({
  * @return The new survey template sheet in the active spreadsheet.
  */
 function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
-  const surveyTemplateSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(name, 0)
+  Logger.log(`Creating '${name}' sheet...`)
+  const surveyTemplateSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(name, 0).activate()
+  SpreadsheetApp.flush()
   Logger.log(`Populating "${name}" headers...`)
   var rowIndex = 1
   surveyTemplateSheet
