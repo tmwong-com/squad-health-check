@@ -1,9 +1,11 @@
+<img width="128" height="128" alt="stethoscope-128x128" src="https://github.com/user-attachments/assets/63d91970-5b81-47e8-85b0-b8cd5b0c217a" />
+
 Squad Health Check
 ==================
 
-The Squad Health Check is a way for teams to gauge their perception of productivity, performance, and purpose. Originally developed at Spotify, the check enables teams to identify ways to improve their processes, individual skills, and overall work quality-of-life across eleven dimensions of team sentiment. Spotify's engineers have refined the check over the years, and we recommend reading their [original 2014 blog post](https://engineering.atspotify.com/2014/09/squad-health-check-model) and [follow-up 2023 blog post](https://engineering.atspotify.com/2023/03/getting-more-from-your-team-health-checks) prior to using the tool. Here, we have adapted the questions from a [distillation of the Spotify process by TeamRetro](https://www.teamretro.com/health-checks/squad-health-check) used under a Creative Commons Attribution-ShareAlike license.
+The Squad Health Check Google Sheets™ editor add-on helps teams to self-assess their productivity, performance, and purpose. The Squad Health Check helps identify ways to improve team processes, individual skills, and overall work quality-of-life across eleven dimensions of team sentiment. The add-on automates the generation and management of surveys for teams to measure “perception” and “trend” sentiments in each dimension.
 
-The Squad Health Check Google Sheets™ editor add-on automates the generation of a survey for teams to measure _perception_ and _trend_ sentiments in each dimension. The add-on adds sheets into an existing Google Sheets™ spreadsheet to provide a template sheet for generating a Google Forms™ survey and compute and chart sheets for aggregating survey responses from team members.
+Spotify engineers originally developed and have refined their version of the Squad Health Check over the years. We recommend reading their [original 2014 blog post](https://engineering.atspotify.com/2014/09/squad-health-check-model) and [follow-up 2023 blog post](https://engineering.atspotify.com/2023/03/getting-more-from-your-team-health-checks) prior to using the tool. In this add-on, we have adapted the questions from a [distillation of the Spotify process by TeamRetro](https://www.teamretro.com/health-checks/squad-health-check) shared under a Creative Commons Attribution-ShareAlike license.
 
 ## Installation
 
