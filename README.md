@@ -17,7 +17,7 @@ You will need to [sign up for a Google™ account](https://accounts.google.com/s
 
 * Initialize Squad Health Check survey template and compute sheets with “Extensions → Squad Health Check → Install templates…”. The add-on will create “Survey template” and “Compute” template sheets, and protect them against accidental editing.
 
-* Optionally, initialize chart sheets with “Extensions → Squad Health Check → Install charts…”. The graphs in the chart sheets allow you to observe changes in perception and trend sentiments across different Squad Health Check dates.
+* Optionally, initialize chart sheets with “Extensions → Squad Health Check → Install charts”. The graphs in the chart sheets allow you to observe changes in perception and trend sentiments across different Squad Health Check dates.
 
 ### Google OAuth permissions
 
@@ -38,6 +38,10 @@ When installing the add-on, you will see a dialog asking you to grant the follow
 ## Survey response collection
 
 The response sheet will update automatically as team members complete the survey form. You can view the average sentiment scores (higher average numbers are “better”) in the “Compute” sheet, and look at graphs over time of perception and trend in the chart sheets (if you installed the chart sheets).
+
+## Survey response sheet removal
+
+If you rename or remove a survey response sheet (i.e., the sheet linked to a Squad Health Check survey form) you should use “Extensions → Squad Health Check → Update compute” to remove the outdated references to the reponse sheet from the compute sheet.
 
 ## Acknowledgments
 
