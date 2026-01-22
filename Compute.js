@@ -287,12 +287,11 @@ function getChartSheets() {
 }
 
 /**
- * Trigger the compute sheet by filling a column
+ * Update the compute sheet by filling a column
  * with all sheet names starting with the response sheet name prefix.
- * @customfunction
  * @param {string} name The name of the compute sheet
  */
-function triggerCompute(name = COMPUTE_SHEET) {
+function updateCompute(name = COMPUTE_SHEET) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   var namesAndDates = getNamesAndDates(spreadsheet).sort()
   // Insert the sheet names in the target range to trigger computes...
