@@ -50,7 +50,6 @@ function runInstallTemplateSheets() {
       createSurveyTemplateSheet()
       createComputeSheet()
       updateCompute()
-      ScriptApp.newTrigger(onChange.name).forSpreadsheet(spreadsheet).onChange().create()
       break;
     default:
       break;
