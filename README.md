@@ -29,7 +29,7 @@ When installing the add-on, you will see a dialog asking you to grant the follow
 
 * Run the Editor add-on by opening “Extensions → Squad Health Check → Generate survey form…”. A dialog box will appear asking you to specify a date in yyyy-MM-dd format (such as the date of a meeting at which you plan to discuss the results). Fill in the date and select “OK”.
 
-* Wait for the add-on to finish running. Once the add-on finishes, you will have a survey form at the root of your drive (“My Drive”) named “Squad Health Check \[yyyy-MM-dd\]” and a new survey response sheet in your copy of the spreadsheet named “Squad Health Check \[yyyy-MM-dd\]”.
+* Wait for the add-on to finish running. Once the add-on finishes, you will have a survey form at the root of your drive (“My Drive”) named “Squad Health Check [yyyy-MM-dd]” and a new survey response sheet in your copy of the spreadsheet named “Squad Health Check [yyyy-MM-dd]”.
 
 * Open the new form, and click the “Publish” button.
 
