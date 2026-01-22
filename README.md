@@ -41,7 +41,7 @@ The response sheet will update automatically as team members complete the survey
 
 ## Survey response sheet removal
 
-If you rename or remove a survey response sheet (i.e., the sheet linked to a Squad Health Check survey form) you should use “Extensions → Squad Health Check → Update compute” to remove the outdated references to the reponse sheet from the compute sheet.
+If you rename or remove a survey response sheet (i.e., the sheet linked to a Squad Health Check survey form) you should use “Extensions → Squad Health Check → Update compute” to remove the outdated references to the response sheet from the compute sheet.
 
 ## Acknowledgments
 
