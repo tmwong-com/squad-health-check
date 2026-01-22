@@ -35,7 +35,7 @@ function runComputeSheetTests() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const sheetName = `Compute ${Utilities.getUuid()}`
   createComputeSheet(sheetName)
-  triggerCompute(sheetName)
+  updateCompute(sheetName)
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName(_SHEET_NAME))
   fillCrosscheckSheet(sheetName)
 }

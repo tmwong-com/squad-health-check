@@ -7,15 +7,17 @@ The Squad Health Check Google Sheets™ editor add-on automates the generation o
 
 ## Installation
 
+Initialize Squad Health Check survey template and compute sheets with “Extensions → Squad Health Check → Install templates…”. Generate a new Squad Health Check survey form with “Extensions → Squad Health Check → Generate survey form…”.
+
 You will need to [sign up for a Google™ account](https://accounts.google.com/signup) to use the tool if you do not already have an account. You will also need access to Google Sheets™ and permissions to install add-ons from the Google Workspace™ Marketplace; if you are using a work or school account, you may need to ask your administrator to enable access.
 
 * Install the [Squad Health Check add-on](https://workspace.google.com/marketplace/app/squad_health_check/746334686635) from the Google Workspace Marketplace™.
 
 * Open a Google Sheets™ spreadsheet. We recommend using a new worksheet for hosting the templates and survey responses.
 
-* Initialize the spreadsheet by opening “Extensions → Squad Health Check → Install templates…”. The add-on will create “Survey template” and “Compute” template sheets, and protect them against accidental editing.
+* Initialize Squad Health Check survey template and compute sheets with “Extensions → Squad Health Check → Install templates…”. The add-on will create “Survey template” and “Compute” template sheets, and protect them against accidental editing.
 
-* Optionally, initialize the chart sheets by opening “Extensions → Squad Health Check → Install charts…”. The graphs in the chart sheets allow you to observe changes in perception and trend sentiments across different Squad Health Check dates.
+* Optionally, initialize chart sheets with “Extensions → Squad Health Check → Install charts”. The graphs in the chart sheets allow you to observe changes in perception and trend sentiments across different Squad Health Check dates.
 
 ### Google OAuth permissions
 
@@ -27,7 +29,7 @@ When installing the add-on, you will see a dialog asking you to grant the follow
 
 ## Survey form generation
 
-* Run the Editor add-on by opening “Extensions → Squad Health Check → Generate survey form…”. A dialog box will appear asking you to specify a date in yyyy-MM-dd format (such as the date of a meeting at which you plan to discuss the results). Fill in the date and select “OK”.
+* Generate a new Squad Health Check survey form with “Extensions → Squad Health Check → Generate survey form…”. A dialog box will appear asking you to specify a date in yyyy-MM-dd format (such as the date of a meeting at which you plan to discuss the results). Fill in the date and select “OK”.
 
 * Wait for the add-on to finish running. Once the add-on finishes, you will have a survey form at the root of your drive (“My Drive”) named “Squad Health Check [yyyy-MM-dd]” and a new survey response sheet in your copy of the spreadsheet named “Squad Health Check [yyyy-MM-dd]”.
 
@@ -36,6 +38,10 @@ When installing the add-on, you will see a dialog asking you to grant the follow
 ## Survey response collection
 
 The response sheet will update automatically as team members complete the survey form. You can view the average sentiment scores (higher average numbers are “better”) in the “Compute” sheet, and look at graphs over time of perception and trend in the chart sheets (if you installed the chart sheets).
+
+## Survey response sheet removal
+
+If you rename or remove a survey response sheet (i.e., the sheet linked to a Squad Health Check survey form) you should use “Extensions → Squad Health Check → Update compute” to remove the outdated references to the response sheet from the compute sheet.
 
 ## Acknowledgments
 

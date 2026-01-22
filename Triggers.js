@@ -1,8 +1,10 @@
 const INSTALL_TEMPLATES_MENU_OPTION = "Install templates..."
 
-const INSTALL_CHARTS_MENU_OPTION = "Install charts..."
-
 const GENERATE_SURVEY_MENU_OPTION = "Generate survey form..."
+
+const INSTALL_CHARTS_MENU_OPTION = "Install charts"
+
+const UPDATE_COMPUTE_MENU_OPTION = "Update compute sheet"
 
 /**
  * Trigger handler when a user installs a Workspace add-on.
@@ -19,16 +21,17 @@ function onInstall(event) {
 function onOpen(event) {
   const ui = SpreadsheetApp.getUi()
   ui.createAddonMenu()
-    .addItem(INSTALL_TEMPLATES_MENU_OPTION, showInstallTemplateSheets.name)
-    .addItem(INSTALL_CHARTS_MENU_OPTION, showInstallCharts.name)
-    .addItem(GENERATE_SURVEY_MENU_OPTION, showGenerateSurveyFormPrompt.name)
+    .addItem(INSTALL_TEMPLATES_MENU_OPTION, runInstallTemplateSheets.name)
+    .addItem(GENERATE_SURVEY_MENU_OPTION, runGenerateSurveyFormPrompt.name)
+    .addItem(INSTALL_CHARTS_MENU_OPTION, runInstallCharts.name)
+    .addItem(UPDATE_COMPUTE_MENU_OPTION, runUpdateCompute.name)
     .addToUi()
 }
 
 /**
  * Install the Squad Health Check template sheets for the user.
  */
-function showInstallTemplateSheets() {
+function runInstallTemplateSheets() {
   const ui = SpreadsheetApp.getUi();
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   if (spreadsheet.getSheetByName(COMPUTE_SHEET) || spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET)) {
@@ -46,7 +49,7 @@ function showInstallTemplateSheets() {
     case ui.Button.YES:
       createSurveyTemplateSheet()
       createComputeSheet()
-      triggerCompute()
+      updateCompute()
       break;
     default:
       break;
@@ -56,7 +59,7 @@ function showInstallTemplateSheets() {
 /**
  * Install the chart sheets for the user.
  */
-function showInstallCharts() {
+function runInstallCharts() {
   const ui = SpreadsheetApp.getUi();
   const chartSheets = getChartSheets()
   if (chartSheets.length) {
@@ -79,7 +82,7 @@ function showInstallCharts() {
  * generate a Google Forms Squad Health Check survey,
  * and set up a survey response sheet.
  */
-function showGenerateSurveyFormPrompt() {
+function runGenerateSurveyFormPrompt() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const ui = SpreadsheetApp.getUi();
   const surveyTemplateSheet = spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET)
@@ -104,7 +107,7 @@ function showGenerateSurveyFormPrompt() {
           break
         }
         generateSurveyForm(surveyName)
-        triggerCompute()
+        updateCompute()
         break
       default:
         break
@@ -118,4 +121,12 @@ function showGenerateSurveyFormPrompt() {
       ui.ButtonSet.OK,
     )
   }
+}
+
+/**
+ * Update the compute sheet on demand.
+ * Required if the user renames or deletes a survey response sheet.
+ */
+function runUpdateCompute() {
+  updateCompute()
 }
