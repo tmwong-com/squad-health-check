@@ -110,15 +110,20 @@ function _addDimension(form, data, includeIcons = true) {
   const dimension = unwrap(data[0])
   const good = unwrap(data[1])
   const bad = unwrap(data[2])
-  const iconUrl = unwrap(data[3])
   Logger.log("Adding dimension: '%s' Good: '%s' Bad: '%s'...", dimension, good, bad)
   var description = "Good: " + good + "\n" + "Bad: " + bad
   const dimensionItem = form.addImageItem()
     .setTitle(dimension)
     .setHelpText(description)
   if (includeIcons) {
-    const icon = UrlFetchApp.fetch(iconUrl)
-    dimensionItem.setImage(icon)
+    try {
+      const iconUrl = unwrap(data[3])
+      const icon = UrlFetchApp.fetch(iconUrl)
+      dimensionItem.setImage(icon)
+    }
+    catch (e) {
+      Logger.log(`WARNING: Unable to load icon at "${iconUrl}"...`)
+    }
   }
   const sentiments = Object.keys(SURVEY_SENTIMENTS)
   for (var s in sentiments) {
