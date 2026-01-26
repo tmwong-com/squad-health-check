@@ -1,4 +1,4 @@
-<img width="128" height="128" alt="stethoscope-128x128" src="https://github.com/user-attachments/assets/63d91970-5b81-47e8-85b0-b8cd5b0c217a" />
+![Logo](https://github.com/user-attachments/assets/63d91970-5b81-47e8-85b0-b8cd5b0c217a)
 
 Squad Health Check
 ==================
