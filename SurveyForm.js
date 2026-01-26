@@ -104,25 +104,22 @@ function validateDate(dateString) {
  *   the "good" environment description,
  *   the "bad" environment description,
  *   and a URL to a nifty icon
- * @param {!Array<string>=} A 1x3 array containing
- *   the positive, neutral, and negative
- *   perception sentiments.
- * @param {!Array<string>=} A 1x3 array containing
- *   the positive, neutral, and negative
- *   trend sentiments.
+ * @param {boolean} includeIcons If true, include the nifty icons in the survey form.
  */
-function _addDimension(form, data, perceptionSentiments, trendSentiments) {
+function _addDimension(form, data, includeIcons = true) {
   const dimension = unwrap(data[0])
   const good = unwrap(data[1])
   const bad = unwrap(data[2])
   const iconUrl = unwrap(data[3])
   Logger.log("Adding dimension: '%s' Good: '%s' Bad: '%s'...", dimension, good, bad)
   var description = "Good: " + good + "\n" + "Bad: " + bad
-  var icon = UrlFetchApp.fetch(iconUrl)
-  image = form.addImageItem()
+  const dimensionItem = form.addImageItem()
     .setTitle(dimension)
     .setHelpText(description)
-    .setImage(icon)
+  if (includeIcons) {
+    const icon = UrlFetchApp.fetch(iconUrl)
+    dimensionItem.setImage(icon)
+  }
   const sentiments = Object.keys(SURVEY_SENTIMENTS)
   for (var s in sentiments) {
     form.addMultipleChoiceItem()
@@ -173,7 +170,7 @@ function generateSurveyForm(name) {
   // but JavaScript array rows and columns are 0-indexed.
   for (var dimensionRow = SURVEY_TEMPLATE_DIMENSIONS_ROW_START; dimensionRow < SURVEY_TEMPLATE_DIMENSIONS_ROW_START + getSurveyDimensionsCount(sheet); dimensionRow++) {
     var data = sheet.getSheetValues(dimensionRow, SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START, 1, SURVEY_DIMENSIONS_HEADER.length)[0]
-    _addDimension(form, data, SURVEY_SENTIMENTS.Perception, SURVEY_SENTIMENTS.Trend)
+    _addDimension(form, data, true)
   }
   // Set the destination of survey responses to point back at the current spreadsheet.
   _addDestination(spreadsheet, form, name)
