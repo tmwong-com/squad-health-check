@@ -38,6 +38,12 @@ The response sheet will update automatically as team members complete the survey
 
 If you rename or remove a survey response sheet (i.e., the sheet linked to a Squad Health Check survey form) you should use “Extensions → Squad Health Check → Update compute” to remove the outdated references to the response sheet from the compute sheet.
 
+## Additional help
+
+If you have any further questions about the Squad Health Check add-on or our experiences with running surveys, you may contact us by e-mail at [tmwong@tmwong.com](mailto:tmwong@tmwong.com).
+
+If you discover issues with the tool, please report them through the [Squad Health Check "Issues" page](https://github.com/tmwong-com/squad-health-check/issues) on GitHub.
+
 ## Acknowledgments
 
 * Squad Health Check questions and dimension icons from the TeamRetro [Spotify process](https://www.teamretro.com/health-checks/squad-health-check) used under a Creative Commons Attribution-ShareAlike license
