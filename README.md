@@ -40,7 +40,7 @@ If you rename or remove a survey response sheet (i.e., the sheet linked to a Squ
 
 ## Additional help
 
-If you have any further questions about the Squad Health Check add-on or our expeeriences with running surveys, you may contact us by e-mail at [tmwong@tmwong.com](mailto:tmwong@tmwong.com).
+If you have any further questions about the Squad Health Check add-on or our experiences with running surveys, you may contact us by e-mail at [tmwong@tmwong.com](mailto:tmwong@tmwong.com).
 
 If you discover issues with the tool, please report them through the [Squad Health Check "Issues" page](https://github.com/tmwong-com/squad-health-check/issues) on GitHub.
 
