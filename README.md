@@ -1,20 +1,18 @@
 Squad Health Check
 ==================
 
-The Squad Health Check Google Sheets™ editor add-on helps teams to self-assess their productivity, performance, and purpose. The Squad Health Check helps identify ways to improve team processes, individual skills, and overall work quality-of-life across eleven dimensions of team sentiment. The add-on automates the generation and management of surveys for teams to measure “perception” and “trend” sentiments in each dimension.
+The [Squad Health Check Google Sheets™ editor add-on](https://workspace.google.com/marketplace/app/squad_health_check/746334686635) helps teams to self-assess their productivity, performance, and purpose. The Squad Health Check helps identify ways to improve team processes, individual skills, and overall work quality-of-life across eleven dimensions of team sentiment. The add-on automates the generation and management of surveys for teams to measure “perception” and “trend” sentiments in each dimension.
 
 Spotify engineers originally developed and have refined their version of the Squad Health Check over the years. We recommend reading their [original 2014 blog post](https://engineering.atspotify.com/2014/09/squad-health-check-model) and [follow-up 2023 blog post](https://engineering.atspotify.com/2023/03/getting-more-from-your-team-health-checks) prior to using the tool. In this add-on, we have adapted the questions from a [distillation of the Spotify process by TeamRetro](https://www.teamretro.com/health-checks/squad-health-check) shared under a Creative Commons Attribution-ShareAlike license.
 
 ## Installation
 
-Initialize Squad Health Check survey template and compute sheets with “Extensions → Squad Health Check → Install templates…”. Generate a new Squad Health Check survey form with “Extensions → Squad Health Check → Generate survey form…”.
-
-You will need to [sign up for a Google™ account](https://accounts.google.com/signup) to use the tool if you do not already have an account. You will also need access to Google Sheets™ and permissions to install add-ons from the Google Workspace™ Marketplace; if you are using a work or school account, you may need to ask your administrator to enable access.
-
 * Install the [Squad Health Check add-on](https://workspace.google.com/marketplace/app/squad_health_check/746334686635) from the Google Workspace Marketplace™.
 * Open a Google Sheets™ spreadsheet. We recommend using a new worksheet for hosting the templates and survey responses.
 * Initialize Squad Health Check survey template and compute sheets with “Extensions → Squad Health Check → Install templates…”. The add-on will create “Survey template” and “Compute” template sheets, and protect them against accidental editing.
 * Optionally, initialize chart sheets with “Extensions → Squad Health Check → Install charts”. The graphs in the chart sheets allow you to observe changes in perception and trend sentiments across different Squad Health Check dates.
+
+You will need to [sign up for a Google™ account](https://accounts.google.com/signup) to use the tool if you do not already have an account. You will also need access to Google Sheets™ and permissions to install add-ons from the Google Workspace™ Marketplace; if you are using a work or school account, you may need to ask your administrator to enable access.
 
 ### Google OAuth permissions
 
