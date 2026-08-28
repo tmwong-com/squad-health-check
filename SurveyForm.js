@@ -102,11 +102,12 @@ function validateDate(dateString) {
  * source URL has gone stale.
  * @param {Sheet} sheet The survey template sheet.
  * @param {number} row The row of the dimension whose icon to read.
- * @return {Blob} The icon image blob, or null if the cell holds no image.
+ * @return {Blob|null} The icon image blob, or null if the cell holds no image.
  */
 function _getInCellIconBlob(sheet, row) {
   // Remember that the icon preview comes _after_ the dimension data.
-  const cellValue = sheet.getRange(row, SURVEY_DIMENSIONS_HEADER.length + 1).getValue()
+  const iconColumn = SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START + SURVEY_DIMENSIONS_HEADER.length
+  const cellValue = sheet.getRange(row, iconColumn).getValue()
   if (cellValue != null && typeof cellValue.getContentUrl === "function") {
     return UrlFetchApp.fetch(cellValue.getContentUrl()).getBlob()
   }
