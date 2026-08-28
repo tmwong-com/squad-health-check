@@ -193,8 +193,8 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
       .setValues([SURVEY_DIMENSIONS[d]])
       .setVerticalAlignment("top")
       .setWrap(true)
+    const iconUrl = SURVEY_DIMENSIONS[d][3]
     try {
-      const iconUrl = SURVEY_DIMENSIONS[d][3]
       const icon =
         SpreadsheetApp.newCellImage()
           .setSourceUrl(iconUrl)
