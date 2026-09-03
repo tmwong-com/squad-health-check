@@ -132,10 +132,12 @@ function _addDimension(form, data, includeIcons = true, templateSheet = null, te
   const good = unwrap(data[1])
   const bad = unwrap(data[2])
   Logger.log("Adding dimension: '%s' Good: '%s' Bad: '%s'...", dimension, good, bad)
-  var description = "Good: " + good + "\n" + "Bad: " + bad
+  const descriptions = {
+    Perception: "Good: " + good + "\n" + "Bad: " + bad,
+    Trend: SURVEY_TREND_DESCRIPTION
+  }
   const dimensionItem = form.addImageItem()
     .setTitle(dimension)
-    .setHelpText(description)
   if (includeIcons) {
     // Icon loading is best-effort: a stale icon URL or unreadable cell image
     // must never prevent survey generation.
@@ -145,10 +147,10 @@ function _addDimension(form, data, includeIcons = true, templateSheet = null, te
       iconUrl = data[3]
       if (iconUrl) {
         try {
-          icon = UrlFetchApp.fetch(iconUrl)
+          icon = UrlFetchApp.fetch(iconUrl).getBlob()
         }
         catch (e) {
-          Logger.log(`WARNING: Unable to load icon at "${iconUrl}", falling back to in-cell icon image...`)
+          Logger.log(`WARNING: Unable to load icon at "${iconUrl}", error: ${e}; falling back to in-cell icon image...`)
         }
       }
       if (icon == null && templateSheet != null && templateRow != null) {
@@ -162,13 +164,14 @@ function _addDimension(form, data, includeIcons = true, templateSheet = null, te
       }
     }
     catch (e) {
-      Logger.log(`WARNING: Unable to load icon at "${iconUrl}" or from the template sheet, continuing without one...`)
+      Logger.log(`WARNING: Unable to load icon at "${iconUrl}" or from the template sheet, error: ${e}; continuing without one...`)
     }
   }
   const sentiments = Object.keys(SURVEY_SENTIMENTS)
   for (var s in sentiments) {
     form.addMultipleChoiceItem()
       .setTitle(dimension + ": " + sentiments[s])
+      .setHelpText(descriptions[sentiments[s]])
       .setChoiceValues(SURVEY_SENTIMENTS[sentiments[s]])
       .setRequired(true)
       .showOtherOption(false)

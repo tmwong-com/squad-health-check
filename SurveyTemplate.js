@@ -38,6 +38,8 @@ const SURVEY_DIMENSIONS_HEADER = Object.freeze([
   "Icon URL",
 ])
 
+const SURVEY_ICON_URL_PREFIX = "https://www.tmwong.org/squad-health-check/images/"
+
 /**
  * The dimensions used to quantify team productivity, performance, and purpose.
  * 1. Dimension name
@@ -51,61 +53,61 @@ const SURVEY_DIMENSIONS = Object.freeze({
     "Delivering value",
     "We deliver great stuff! We’re proud of it and our stakeholders are really happy.",
     "We deliver crap. We feel ashamed to deliver it. Our stakeholders hate us.",
-    "https://www.teamretro.com/wp-content/uploads/2024/02/diamond.png",
+    SURVEY_ICON_URL_PREFIX + "delivering-value.png",
   ],
   EASE: [
     "Ease of release",
     "Releasing is simple, safe, painless and mostly automated.",
     "Releasing is risky, painful, lots of manual work and takes forever.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image11.png",
+    SURVEY_ICON_URL_PREFIX + "ease-of-release.png",
   ],
   FUN: [
     "Fun",
     "We love going to work and have great fun working together!",
     "Boooooooring…",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image2-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "fun.png",
   ],
   HEALTH: [
     "Health of repository",
     "We’re proud of the quality of our repository of reusable artifacts: code, documentation, handbooks, etc. Code is easy to read and properly tested, documentation is up to date, etc.",
     "Our artifacts are a pile of dung and technical/documentation debt is raging out of control.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image13-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "health-of-repository.png",
   ],
   LEARNING: [
     "Learning",
     "We’re learning lots of interesting stuff all the time!",
     "We never have time to learn anything.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image10-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "learning.png",
   ],
   MISSION: [
     "Mission",
     "We know why we are here and we’re really excited about it!",
     "We have no idea why we are here. There’s no high lever picture or focus. Our so-called mission is completely unclear and uninspiring.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image15-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "mission.png",
   ],
   PAWNS_OR_PLAYERS: [
     "Pawns or players",
     "We are in control of our own destiny! We decide what to build and how to build it.",
     "We are just pawns in a game of chess with no influence over what we build or how we build it.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image7-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "pawns-or-players.png",
   ],
   SPEED: [
     "Speed",
     "We get stuff done really quickly! No waiting and no delays.",
     "We never seem to get anything done. We keep getting stuck or interrupted. Tasks keep getting stuck on dependencies.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image9-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "speed.png",
   ],
   SUITABLE_PROCESS: [
     "Suitable process",
     "Our way of working fits us perfectly!",
     "Our way of working sucks!",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image1-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "suitable-process.png",
   ],
   SUPPORT: [
     "Support",
     "We always get great support and help when we ask for it!",
     "We keep getting stuck because we can’t get the support and help that we ask for.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image8-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "support.png",
   ],
   TEAMWORK: [
     "Teamwork",
@@ -142,6 +144,10 @@ const SURVEY_SENTIMENTS = Object.freeze({
     "Deteriorating ↘️",
   ],
 })
+
+const SURVEY_TREND_DESCRIPTION =
+  "Improving: Feels like things are getting better over time.\n" +
+  "Deteriorating: Feels like things are getting worse over time."
 
 /**
  * Create a survey template sheet using predefined static content

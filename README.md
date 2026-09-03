@@ -1,5 +1,8 @@
-Squad Health Check
-==================
+<p align="right">
+  <img src="https://www.tmwong.org/squad-health-check/images/stethoscope.png" alt="Stethoscope icon">
+</p>
+
+# Squad Health Check
 
 The [Squad Health Check Google Sheets™ editor add-on](https://workspace.google.com/marketplace/app/squad_health_check/746334686635) helps teams to self-assess their productivity, performance, and purpose. The Squad Health Check helps identify ways to improve team processes, individual skills, and overall work quality-of-life across eleven dimensions of team sentiment. The add-on automates the generation and management of surveys for teams to measure “perception” and “trend” sentiments in each dimension.
 
@@ -44,5 +47,17 @@ If you discover issues with the tool, please report them through the [Squad Heal
 
 ## Acknowledgments
 
-* Squad Health Check questions and dimension icons from the TeamRetro [Spotify process](https://www.teamretro.com/health-checks/squad-health-check) used under a Creative Commons Attribution-ShareAlike license
-* Stethoscope icon designed by [Freepik at Flaticon](https://www.flaticon.com/authors/freepik)
+* Icons created by Magnific - Flaticon:
+  * <a href="https://www.flaticon.com/free-icons/book" title="book icons">Book</a>
+  * <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess</a>
+  * <a href="https://www.flaticon.com/free-icons/confetti" title="confetti icons">Confetti</a>
+  * <a href="https://www.flaticon.com/free-icons/diamond" title="diamond icons">Diamond</a>
+  * <a href="https://www.flaticon.com/free-icons/hands" title="hands icons">Hands</a>
+  * <a href="https://www.flaticon.com/free-icons/heartbeat" title="heartbeat icons">Heartbeat</a>
+  * <a href="https://www.flaticon.com/free-icons/lifebuoy" title="lifebuoy icons">Lifebuoy</a>
+  * <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Rocket</a>
+  * <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings</a>
+  * <a href="https://www.flaticon.com/free-icons/speedometer" title="speedometer icons">Speedometer</a>
+  * <a href="https://www.flaticon.com/free-icons/stethoscope" title="stethoscope icons">Stethoscope</a>
+  * <a href="https://www.flaticon.com/free-icons/strategy" title="strategy icons">Strategy</a>
+* Squad Health Check questions from the TeamRetro [Spotify process](https://www.teamretro.com/health-checks/squad-health-check) used under a Creative Commons Attribution-ShareAlike license

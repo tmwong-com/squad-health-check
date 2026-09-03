@@ -9,16 +9,6 @@
   "timeZone": "America/Los_Angeles",
   "urlFetchWhitelist": [
     "https://*.googleusercontent.com/",
-    "https://www.teamretro.com/wp-content/uploads/2024/02/diamond.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image1-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image2-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image7-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image8-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image9-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image10-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image11.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image13-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image14-150x150.png",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image15-150x150.png"
+    "https://www.tmwong.org/squad-health-check/images/"
   ]
 }
