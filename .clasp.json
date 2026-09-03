@@ -1,6 +1,7 @@
 {
   "scriptId": "1aMSsgk27sWarF8-W7EGU2fFY9n2BEDRpKQdrme6rcq2qhWQlrjSYPl4b",
   "rootDir": "",
+  "projectId": "squad-health-check-474618",
   "scriptExtensions": [
     ".js",
     ".gs"
@@ -11,6 +12,5 @@
   "jsonExtensions": [
     ".json"
   ],
-  "filePushOrder": [],
-  "skipSubdirectories": false
+  "filePushOrder": []
 }
