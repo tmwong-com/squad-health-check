@@ -113,7 +113,7 @@ const SURVEY_DIMENSIONS = Object.freeze({
     "Teamwork",
     "We are a totally gelled super-team with awesome collaboration!",
     "We are a bunch of individuals that neither know nor care about what the other people in the squad are doing.",
-    "https://www.teamretro.com/wp-content/uploads/2019/08/image14-150x150.png",
+    SURVEY_ICON_URL_PREFIX + "teamwork.png",
   ],
 })
 
