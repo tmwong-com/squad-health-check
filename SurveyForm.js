@@ -168,11 +168,11 @@ function _addDimension(form, data, includeIcons = true, templateSheet = null, te
     }
   }
   const sentiments = Object.keys(SURVEY_SENTIMENTS)
-  for (var s in sentiments) {
+  for (const sentiment of sentiments) {
     form.addMultipleChoiceItem()
-      .setTitle(dimension + ": " + sentiments[s])
-      .setHelpText(descriptions[sentiments[s]])
-      .setChoiceValues(SURVEY_SENTIMENTS[sentiments[s]])
+      .setTitle(dimension + ": " + sentiment)
+      .setHelpText(descriptions[sentiment])
+      .setChoiceValues(SURVEY_SENTIMENTS[sentiment])
       .setRequired(true)
       .showOtherOption(false)
   }
