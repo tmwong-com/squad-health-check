@@ -44,17 +44,5 @@ If you discover issues with the tool, please report them through the [Squad Heal
 
 ## Acknowledgments
 
-* Icons created by Magnific - Flaticon:
-  * [Book](https://www.flaticon.com/free-icons/book)
-  * [Chess](https://www.flaticon.com/free-icons/chess)
-  * [Confetti](https://www.flaticon.com/free-icons/confetti)
-  * [Diamond](https://www.flaticon.com/free-icons/diamond)
-  * [Hands](https://www.flaticon.com/free-icons/hands)
-  * [Heartbeat](https://www.flaticon.com/free-icons/heartbeat)
-  * [Lifebuoy](https://www.flaticon.com/free-icons/lifebuoy)
-  * [Rocket](https://www.flaticon.com/free-icons/rocket)
-  * [Settings](https://www.flaticon.com/free-icons/settings)
-  * [Speedometer](https://www.flaticon.com/free-icons/speedometer)
-  * [Stethoscope](https://www.flaticon.com/free-icons/stethoscope)
-  * [Strategy](https://www.flaticon.com/free-icons/strategy)
+* Icons made by [Magnific](https://www.flaticon.com/authors/magnific) from [www.flaticon.com](https://www.flaticon.com/)
 * Squad Health Check questions from the TeamRetro [Spotify process](https://www.teamretro.com/health-checks/squad-health-check) used under a Creative Commons Attribution-ShareAlike license
