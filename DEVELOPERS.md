@@ -22,3 +22,7 @@ After running these steps, you should have:
 * `login`: Log in to the Apps Script API
 * `push`: Push local changes to Apps Script files (including `*.js` and `appsscript.json`) to the remote project
 * `pull`: Pull remote changes made in the Apps Script console into the local repository
+
+## Internationalization
+
+To account for locales that use semicolons (`;`) instead of commas (`,`) as function argument separators, formulas generated programmatically use `;`. The Google Sheets backend then converts them to the locale-appropriate separator when evaluating the sheet.

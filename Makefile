@@ -1,4 +1,4 @@
-PROJECT_NAME ?= "Squad Health Check"
+PROJECT_NAME ?= Squad Health Check
 
 env:
 	@echo Installing @google/clasp...

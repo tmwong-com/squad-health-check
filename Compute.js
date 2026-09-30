@@ -46,6 +46,10 @@ const _LINES_PER_CHART = 4
  *   ordered from most (at index 0) to least positive.
  * @return {string} An aggregation formula suitable for insertion into the compute sheet,
  *   with placeholders for the statistic, column, and sentiments replaced appropriately.
+ *   The returned formulas use semicolons as argument separators
+ *   and rely on the locale settings
+ *   in the host Google Sheets spreadsheet
+ *   to enforce conversion to the appropriate separator.
  */
 function _createFormula(statistic, column, sentiments) {
   return `=IF(NOT(OR(ISBLANK(A3); C3 = 0)); ${statistic}(IFERROR(SWITCH(INDIRECT(A3&"!${column}"); "${sentiments[0]}"; 3; "${sentiments[1]}"; 2; "${sentiments[2]}"; 1))); )`
@@ -77,6 +81,10 @@ function _createStatisticsFormulaPair(responseTableColumn, sentiments) {
  *   each succeesive set of four elements contains a pair of average and SD values
  *     for each sentiment
  *       for each dimension.
+ *   The returned formulas use semicolons as argument separators
+ *   and rely on the locale settings
+ *   in the host Google Sheets spreadsheet
+ *   to enforce conversion to the appropriate separator.
  */
 function _createComputeFormulas(dimensionsCount) {
   unwrap(dimensionsCount)
@@ -132,6 +140,8 @@ function createChartFromRangeList(sheet, title, ranges) {
  * and survey response processing formulas.
  * @param {string} computeSheetName The name for the created compute sheet;
  *   by default, COMPUTE_SHEET.
+ * @param {string} surveyTemplateSheetName The name of the survey template sheet;
+ *   by default, SURVEY_TEMPLATE_SHEET.
  */
 function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()

@@ -12,7 +12,7 @@ function arrayIsBlank(data) {
 }
 
 /**
- * Test that we generate aggregation formulas for all dimsentions surveyed.
+ * Test that we generate aggregation formulas for all dimensions surveyed.
  */
 function test_computeFormulasCoverAllDimensions(sheet) {
   const dimensionsCount = getSurveyDimensionsCount(sheet)
