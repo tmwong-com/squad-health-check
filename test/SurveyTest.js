@@ -12,15 +12,15 @@ function arrayIsBlank(data) {
 }
 
 /**
- * Test that we generate aggregation formulae for all dimsentions surveyed.
+ * Test that we generate aggregation formulas for all dimensions surveyed.
  */
-function test_computeFormulaeCoverAllDimensions(sheet) {
+function test_computeFormulasCoverAllDimensions(sheet) {
   const dimensionsCount = getSurveyDimensionsCount(sheet)
-  const formulae = _createComputeFormulae(dimensionsCount)
+  const formulas = _createComputeFormulas(dimensionsCount)
   // One formula for count of respondees
   // plus for each dimension a pair of average and SD for each sentiment
-  const expectedFormulaeLength = 1 + (dimensionsCount * getSurveySentimentsCount() * 2)
-  return (expectedFormulaeLength == formulae.length)
+  const expectedFormulasLength = 1 + (dimensionsCount * getSurveySentimentsCount() * 2)
+  return (expectedFormulasLength == formulas.length)
 }
 
 /**
@@ -100,7 +100,7 @@ function test_validateDateStringValidDate(_) {
 }
 
 const TESTS_TEMPLATE_SHEET = [
-  test_computeFormulaeCoverAllDimensions,
+  test_computeFormulasCoverAllDimensions,
   test_dimensionsTableExists,
   test_dimensionsTableHasDimensions,
   test_dimensionsTableNoBlanks,
@@ -167,14 +167,18 @@ function runSurveyTemplateStaticContentsTests() {
  * This test function is runnable from within the Apps Script editor,
  * and will delete the template
  * if all the unit tests pass.
+ * @param {boolean} keepTestSheet Whether to keep the test sheet after running the tests.
+ * @return {string} The name of the created survey template sheet.
  */
-function runSurveyTemplateTestsInteractively() {
+function runSurveyTemplateTests(keepTestSheet = false) {
   var failed = runSurveyTemplateStaticContentsTests()
-  const sheet = createSurveyTemplateSheet(`${SURVEY_TEMPLATE_SHEET} ${Utilities.getUuid()}`)
+  const name = `${SURVEY_TEMPLATE_SHEET} ${Utilities.getUuid()}`
+  const sheet = createSurveyTemplateSheet(name)
   failed += runSurveyTemplateSheetTests(sheet)
   if (failed != 0) {
     throw Error(`${failed} test(s) failed`)
-  } else {
+  } else if (!keepTestSheet) {
     SpreadsheetApp.getActiveSpreadsheet().deleteSheet(sheet)
   }
+  return name
 }
