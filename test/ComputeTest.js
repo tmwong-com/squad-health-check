@@ -17,25 +17,33 @@ function fillCrosscheckSheet(computeSheetName = COMPUTE_SHEET) {
   // with the static survey results.
   const computeSheet = spreadsheet.getSheetByName(computeSheetName)
   const computeRow = unwrap(computeSheet.createTextFinder(_SURVEY_NAME).findNext()).getRow()
-  var formulae = []
+  var formulas = []
   // Fill "Average OK"
   for (var i = 0; i < 22; i++) {
-    formulae = formulae.concat([`=EQ(${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}7,'${computeSheetName}'!${INTEGERS_TO_COLUMNS[_COLUMN_D + (i * 2)]}$${computeRow})`])
+    formulas = formulas.concat([`=EQ(${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}7; '${computeSheetName}'!${INTEGERS_TO_COLUMNS[_COLUMN_D + (i * 2)]}$${computeRow})`])
   }
-  crosscheckSheet.getRange("C8:X8").setValues([formulae])
+  crosscheckSheet.getRange("C8:X8").setValues([formulas])
   // Fill "Standard deviation OK"
-  formulae = []
+  formulas = []
   for (var i = 0; i < 22; i++) {
-    formulae = formulae.concat([`=EQ(${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}9,'${computeSheetName}'!${INTEGERS_TO_COLUMNS[_COLUMN_E + (i * 2)]}$${computeRow})`])
+    formulas = formulas.concat([`=EQ(${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}9; '${computeSheetName}'!${INTEGERS_TO_COLUMNS[_COLUMN_E + (i * 2)]}$${computeRow})`])
   }
-  crosscheckSheet.getRange("C10:X10").setValues([formulae])
+  crosscheckSheet.getRange("C10:X10").setValues([formulas])
 }
 
-function runComputeSheetTests() {
+/**
+ * Create a test compute sheet
+ * and update the crosscheck sheet
+ * to test the formulas in the new sheet.
+ * This test function is runnable from within the Apps Script editor,
+ * but will leave the crosscheck sheet
+ * pointing at the new compute sheet.
+ */
+function runComputeSheetTests(surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  const sheetName = `Compute ${Utilities.getUuid()}`
-  createComputeSheet(sheetName)
-  updateCompute(sheetName)
+  const computeSheetName = `Compute ${Utilities.getUuid()}`
+  createComputeSheet(computeSheetName, surveyTemplateSheetName)
+  updateCompute(computeSheetName)
   spreadsheet.setActiveSheet(spreadsheet.getSheetByName(_SHEET_NAME))
-  fillCrosscheckSheet(sheetName)
+  fillCrosscheckSheet(computeSheetName)
 }
