@@ -22,12 +22,12 @@ function test_computeAverageAndSdPerDimension(computeSheetName = COMPUTE_SHEET) 
   // with the static survey results.
   const computeSheet = spreadsheet.getSheetByName(computeSheetName)
   const computeRow = unwrap(computeSheet.createTextFinder(_FIXTURE_SURVEY_NAME).findNext()).getRow()
-  for (var i = 0; i < 11; i++) {
+  for (var i = 0; i < Object.keys(SURVEY_DIMENSIONS).length * getSurveySentimentsCount(); i++) {
     const dimension = computeSheet.getRange(`${INTEGERS_TO_COLUMNS[_COLUMN_D + (i * 2)]}1`).getValue()
     // Recall the shape of the compute sheet.
     // For a given survey name,
-    // the name of the first dimension
-    // (by default, "Delivering value")
+    // the name of the first dimension and sentiment
+    // (by default, "Delivering value: Perception")
     // is cell D1,
     // the average score of the first dimension
     // is column D,
