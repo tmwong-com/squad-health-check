@@ -1,49 +1,79 @@
-/**
- * Refill the crosscheck sheet when we delete then install a new compute sheet.
- * A dirty hack for testing purposes only.
- */
-
 const _COLUMN_C = 3
 const _COLUMN_D = 4
 const _COLUMN_E = 5
 
-const _SHEET_NAME = "Crosscheck sheet"
-const _SURVEY_NAME = "Squad Health Check 2025-08-26"
+const _CROSSCHECK_SHEET_NAME = "Crosscheck sheet"
+const _FIXTURE_SURVEY_NAME = "Squad Health Check 2025-08-26"
 
-function fillCrosscheckSheet(computeSheetName = COMPUTE_SHEET) {
+/**
+ * Test that the formulas in a compute sheet
+ * correctly calculate the average and standard deviation
+ * of survey responses
+ * for each dimension,
+ * using static survey responses
+ * and expected values in the crosscheck sheet.
+ * @param {string} computeSheetName The name of the compute sheet to test.
+ * @throws {Error} If any computed value does not match the expected cross-check value.
+ */
+function test_computeAverageAndSdPerDimension(computeSheetName = COMPUTE_SHEET) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  const crosscheckSheet = spreadsheet.getSheetByName(_SHEET_NAME)
+  const crosscheckSheet = spreadsheet.getSheetByName(_CROSSCHECK_SHEET_NAME)
   // Find the row in the compute sheet
   // with the static survey results.
   const computeSheet = spreadsheet.getSheetByName(computeSheetName)
-  const computeRow = unwrap(computeSheet.createTextFinder(_SURVEY_NAME).findNext()).getRow()
-  var formulas = []
-  // Fill "Average OK"
-  for (var i = 0; i < 22; i++) {
-    formulas = formulas.concat([`=EQ(${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}7; '${computeSheetName}'!${INTEGERS_TO_COLUMNS[_COLUMN_D + (i * 2)]}$${computeRow})`])
+  const computeRow = unwrap(computeSheet.createTextFinder(_FIXTURE_SURVEY_NAME).findNext()).getRow()
+  for (var i = 0; i < 11; i++) {
+    const dimension = computeSheet.getRange(`${INTEGERS_TO_COLUMNS[_COLUMN_D + (i * 2)]}1`).getValue()
+    // Recall the shape of the compute sheet.
+    // For a given survey name,
+    // the name of the first dimension
+    // (by default, "Delivering value")
+    // is cell D1,
+    // the average score of the first dimension
+    // is column D,
+    // and the SD of the first dimension
+    // is column E.
+    // After that we march along two columns at a time.
+    const computeValues = computeSheet.getRangeList(
+      [
+        `${INTEGERS_TO_COLUMNS[_COLUMN_D + (i * 2)]}${computeRow}`,
+        `${INTEGERS_TO_COLUMNS[_COLUMN_E + (i * 2)]}${computeRow}`,
+      ]
+    ).getRanges()
+    // Now the shape of the crosscheck sheet.
+    // The crosscheck average
+    // is cell C7,
+    // and the crosscheck SD
+    // is cell C8.
+    // After that we march rightwards one column at a time.
+    const xcheckValues = crosscheckSheet.getRangeList(
+      [
+        `${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}7`,
+        `${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}8`,
+      ]
+    ).getRanges()
+    Logger.log(`Checking ${dimension}...`)
+    for (var j = 0; j < 2; j++) {
+      const computeValue = computeValues[j].getValue().toFixed(2)
+      const xcheckValue = xcheckValues[j].getValue().toFixed(2)
+      if (computeValue != xcheckValue) {
+        throw Error(`Computed value ${computeValue} not equal to cross-check value ${xcheckValue}`)
+      }
+    }
   }
-  crosscheckSheet.getRange("C8:X8").setValues([formulas])
-  // Fill "Standard deviation OK"
-  formulas = []
-  for (var i = 0; i < 22; i++) {
-    formulas = formulas.concat([`=EQ(${INTEGERS_TO_COLUMNS[_COLUMN_C + i]}9; '${computeSheetName}'!${INTEGERS_TO_COLUMNS[_COLUMN_E + (i * 2)]}$${computeRow})`])
-  }
-  crosscheckSheet.getRange("C10:X10").setValues([formulas])
 }
 
 /**
- * Create a test compute sheet
- * and update the crosscheck sheet
- * to test the formulas in the new sheet.
- * This test function is runnable from within the Apps Script editor,
- * but will leave the crosscheck sheet
- * pointing at the new compute sheet.
+ * Create a new compute sheet
+ * and test the formulas in the sheet.
+ * Deletes the sheet after testing.
+ * @param {string} surveyTemplateSheetName The name of the survey template sheet to use
+ *  when creating the compute sheet.
  */
 function runComputeSheetTests(surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const computeSheetName = `Compute ${Utilities.getUuid()}`
-  createComputeSheet(computeSheetName, surveyTemplateSheetName)
+  const computeSheet = createComputeSheet(computeSheetName, surveyTemplateSheetName)
   updateCompute(computeSheetName)
-  spreadsheet.setActiveSheet(spreadsheet.getSheetByName(_SHEET_NAME))
-  fillCrosscheckSheet(computeSheetName)
+  test_computeAverageAndSdPerDimension(computeSheetName)
+  SpreadsheetApp.getActiveSpreadsheet().deleteSheet(computeSheet)
 }

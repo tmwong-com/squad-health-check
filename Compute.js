@@ -142,6 +142,7 @@ function createChartFromRangeList(sheet, title, ranges) {
  *   by default, COMPUTE_SHEET.
  * @param {string} surveyTemplateSheetName The name of the survey template sheet;
  *   by default, SURVEY_TEMPLATE_SHEET.
+ * @return {SpreadsheetApp.Sheet} The newly created compute sheet.
  */
 function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
@@ -223,6 +224,7 @@ function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateShee
     .protect()
     .setDescription(`Protect "${computeSheetName}" against accidental modification`)
     .setWarningOnly(true)
+  return computeSheet
 }
 
 /**
