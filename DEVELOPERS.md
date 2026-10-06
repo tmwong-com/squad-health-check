@@ -26,3 +26,14 @@ After running these steps, you should have:
 ## Internationalization
 
 To account for locales that use semicolons (`;`) instead of commas (`,`) as function argument separators, formulas generated programmatically use `;`. The Google Sheets backend then converts them to the locale-appropriate separator when evaluating the sheet.
+
+## Formatting
+
+Run `npm install` to install the local Prettier development dependency.
+Use `npm run format` to format files or `npm run format:check` to check formatting
+without modifying files.
+
+In VS Code, install the recommended Prettier extension (`esbenp.prettier-vscode`).
+The workspace selects it as the default formatter and uses the local Prettier
+installation. Both VS Code and the command-line scripts use `.prettierrc.json`
+and `.prettierignore` so that formatting rules stay consistent.
