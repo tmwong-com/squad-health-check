@@ -69,7 +69,7 @@ function _createStatisticsFormulaPair(responseTableColumn, sentiments) {
   const column = `${INTEGERS_TO_COLUMNS[responseTableColumn]}:${INTEGERS_TO_COLUMNS[responseTableColumn]}`
   return [
     _createFormula("AVERAGE", column, sentiments),
-    _createFormula("STDEV.P", column, sentiments)
+    _createFormula("STDEV.P", column, sentiments),
   ]
 }
 
@@ -89,10 +89,20 @@ function _createStatisticsFormulaPair(responseTableColumn, sentiments) {
 function _createComputeFormulas(dimensionsCount) {
   unwrap(dimensionsCount)
   // First formula counts the number of respondents to a survey.
-  var formulas = [`=IF(NOT(ISBLANK(A3)); COUNTIF(INDIRECT($A3&"!B:B"); "*@*"); )`]
-  for (var i = 0; i < (dimensionsCount * Object.keys(SURVEY_SENTIMENTS).length);) {
+  var formulas = [
+    `=IF(NOT(ISBLANK(A3)); COUNTIF(INDIRECT($A3&"!B:B"); "*@*"); )`,
+  ]
+  for (
+    var i = 0;
+    i < dimensionsCount * Object.keys(SURVEY_SENTIMENTS).length;
+  ) {
     for (const sentiment in SURVEY_SENTIMENTS) {
-      formulas = formulas.concat(_createStatisticsFormulaPair(_CS_COLUMN_REPONDENT_COUNT + i, SURVEY_SENTIMENTS[sentiment]))
+      formulas = formulas.concat(
+        _createStatisticsFormulaPair(
+          _CS_COLUMN_REPONDENT_COUNT + i,
+          SURVEY_SENTIMENTS[sentiment],
+        ),
+      )
       i++
     }
   }
@@ -112,7 +122,9 @@ function createChartFromRangeList(sheet, title, ranges) {
   sheet.activate()
   // Don't forget that the first range is the x-axis labels.
   if (ranges.length > _LINES_PER_CHART + 1) {
-    throw Error(`Too many ranges to plot on chart: Expected ${_LINES_PER_CHART}, got ${ranges.length}`)
+    throw Error(
+      `Too many ranges to plot on chart: Expected ${_LINES_PER_CHART}, got ${ranges.length}`,
+    )
   }
   const builder = sheet
     .newChart()
@@ -122,7 +134,7 @@ function createChartFromRangeList(sheet, title, ranges) {
     .setOption("series.1.pointShape", "triangle")
     .setOption("series.2.pointShape", "square")
     .setOption("series.3.pointShape", "diamond")
-    .setOption('treatLabelsAsText', true)
+    .setOption("treatLabelsAsText", true)
     .setPointStyle(Charts.PointStyle.HUGE)
     .setPosition(1, 1, 0, 0)
     .setRange(0, 3)
@@ -132,7 +144,7 @@ function createChartFromRangeList(sheet, title, ranges) {
   }
   const chart = builder.build()
   sheet.insertChart(chart)
-  return (chart)
+  return chart
 }
 
 /**
@@ -144,9 +156,14 @@ function createChartFromRangeList(sheet, title, ranges) {
  *   by default, SURVEY_TEMPLATE_SHEET.
  * @return {SpreadsheetApp.Sheet} The newly created compute sheet.
  */
-function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
+function createComputeSheet(
+  computeSheetName = COMPUTE_SHEET,
+  surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET,
+) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  const surveyTemplateSheet = unwrap(spreadsheet.getSheetByName(surveyTemplateSheetName))
+  const surveyTemplateSheet = unwrap(
+    spreadsheet.getSheetByName(surveyTemplateSheetName),
+  )
   Logger.log("Creating compute formulas...")
   const dimensionsCount = getSurveyDimensionsCount(surveyTemplateSheet)
   const formulas = _createComputeFormulas(dimensionsCount)
@@ -161,42 +178,53 @@ function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateShee
   SpreadsheetApp.flush()
   if (computeSheetLastColumn > computeSheet.getMaxColumns()) {
     // Minus one to account for the first column _before_ the inserted columns.
-    computeSheet.insertColumnsAfter(_CS_COLUMN_A, computeSheetLastColumn - computeSheet.getMaxColumns() - 1)
+    computeSheet.insertColumnsAfter(
+      _CS_COLUMN_A,
+      computeSheetLastColumn - computeSheet.getMaxColumns() - 1,
+    )
   }
   // It's just easier to set all the column widths the same,
   // then widen a handful as needed.
-  computeSheet.setColumnWidths(_CS_COLUMN_A, computeSheet.getMaxColumns(), 40).setColumnWidth(_CS_COLUMN_A, 200).setColumnWidth(2, 100)
+  computeSheet
+    .setColumnWidths(_CS_COLUMN_A, computeSheet.getMaxColumns(), 40)
+    .setColumnWidth(_CS_COLUMN_A, 200)
+    .setColumnWidth(2, 100)
   // Set the banding for the whole compute sheet.
   // Remember that a new sheet has 1000 rows by default.
-  computeSheet.getRange(`1:${computeSheet.getMaxRows()}`).applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY)
+  computeSheet
+    .getRange(`1:${computeSheet.getMaxRows()}`)
+    .applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY)
   // Create the header rows
   Logger.log("Populating compute sheet headers...")
   var columnIndex = _CS_COLUMN_A
-  computeSheet.getRange(1, columnIndex, 1, 3).setValues([["Survey name", "Date", "#"]])
+  computeSheet
+    .getRange(1, columnIndex, 1, 3)
+    .setValues([["Survey name", "Date", "#"]])
   columnIndex += 3
-  const dimensions = surveyTemplateSheet.getSheetValues(SURVEY_TEMPLATE_DIMENSIONS_ROW_START, SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START, dimensionsCount, 1)
-  dimensions.forEach(
-    (d) => {
-      for (const sentiment in SURVEY_SENTIMENTS) {
-        // Merge the main header cells for a dimension into a cell for each sentiment,
-        // leaving two subheader cells for average and standard deviation for each sentiment.
-        // | SentimentA | SentimentB | ...
-        // | Avg | SD   | Avg | SD   | ...
-        // First the sentiment header...
-        computeSheet
-          .getRange(1, columnIndex, 1, 2)
-          .mergeAcross()
-          .setValue(d[0] + ": " + sentiment.toString())
-          .setWrap(true)
-
-        // ... then the statistics subheaders
-        computeSheet
-          .getRange(2, columnIndex, 1, 2)
-          .setValues([["Avg", "SD"]])
-        columnIndex += 2
-      }
-    }
+  const dimensions = surveyTemplateSheet.getSheetValues(
+    SURVEY_TEMPLATE_DIMENSIONS_ROW_START,
+    SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START,
+    dimensionsCount,
+    1,
   )
+  dimensions.forEach((d) => {
+    for (const sentiment in SURVEY_SENTIMENTS) {
+      // Merge the main header cells for a dimension into a cell for each sentiment,
+      // leaving two subheader cells for average and standard deviation for each sentiment.
+      // | SentimentA | SentimentB | ...
+      // | Avg | SD   | Avg | SD   | ...
+      // First the sentiment header...
+      computeSheet
+        .getRange(1, columnIndex, 1, 2)
+        .mergeAcross()
+        .setValue(d[0] + ": " + sentiment.toString())
+        .setWrap(true)
+
+      // ... then the statistics subheaders
+      computeSheet.getRange(2, columnIndex, 1, 2).setValues([["Avg", "SD"]])
+      columnIndex += 2
+    }
+  })
   // Populate the first data row with the formulas,
   // starting with the count of respondents,
   // followed by the averages and SD
@@ -209,20 +237,37 @@ function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateShee
   // Set up the formulas for the first data row.
   const formulasTemplateRange = computeSheet
     .getRange(3, _CS_COLUMN_REPONDENT_COUNT, 1, formulas.length)
-    .setFormulas([formulas]).setNumberFormats([["0"].concat(Array.from({ length: formulas.length - 1 }, (_, i) => "0.00"))])
-    .setHorizontalAlignment('right')
-  computeSheet.getRange(_CS_ROW_DATA_START, _CS_COLUMN_SURVEY_DATE).setNumberFormat("yyyy-MM-dd")
+    .setFormulas([formulas])
+    .setNumberFormats([
+      ["0"].concat(
+        Array.from({ length: formulas.length - 1 }, (_, i) => "0.00"),
+      ),
+    ])
+    .setHorizontalAlignment("right")
+  computeSheet
+    .getRange(_CS_ROW_DATA_START, _CS_COLUMN_SURVEY_DATE)
+    .setNumberFormat("yyyy-MM-dd")
   // Don't forget that the target fill ranges needs to include the source range.
   // This mix of 0-indexed and 1-indexed structures will be the death of me.
-  const formulasRange = computeSheet.getRange(_CS_ROW_DATA_START, _CS_COLUMN_REPONDENT_COUNT, computeSheet.getMaxRows() - 2, formulas.length)
-  formulasTemplateRange.autoFill(formulasRange, SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES)
+  const formulasRange = computeSheet.getRange(
+    _CS_ROW_DATA_START,
+    _CS_COLUMN_REPONDENT_COUNT,
+    computeSheet.getMaxRows() - 2,
+    formulas.length,
+  )
+  formulasTemplateRange.autoFill(
+    formulasRange,
+    SpreadsheetApp.AutoFillSeries.DEFAULT_SERIES,
+  )
   // Freeze the header rows and first three columns to make scrolling friendly,
   // and protect the sheet to prevent end users from shooting themselves in the foot.
   computeSheet.setFrozenColumns(_CS_COLUMN_REPONDENT_COUNT)
   computeSheet.setFrozenRows(_CS_ROW_DATA_START - 1)
   computeSheet
     .protect()
-    .setDescription(`Protect "${computeSheetName}" against accidental modification`)
+    .setDescription(
+      `Protect "${computeSheetName}" against accidental modification`,
+    )
     .setWarningOnly(true)
   return computeSheet
 }
@@ -236,8 +281,10 @@ function createComputeSheet(computeSheetName = COMPUTE_SHEET, surveyTemplateShee
 function createChartSheets(computeSheetName = COMPUTE_SHEET) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const computeSheet = unwrap(spreadsheet.getSheetByName(computeSheetName))
-  const surveyTemplateSheet = unwrap(spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET))
-  const dimensionsCount = getSurveyDimensionsCount(surveyTemplateSheet);
+  const surveyTemplateSheet = unwrap(
+    spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET),
+  )
+  const dimensionsCount = getSurveyDimensionsCount(surveyTemplateSheet)
   // For all charts,
   // the x-axis is the dates of the surveys.
   const xAxisLabels = `${INTEGERS_TO_COLUMNS[_CS_COLUMN_SURVEY_DATE]}1:${INTEGERS_TO_COLUMNS[_CS_COLUMN_SURVEY_DATE]}`
@@ -245,9 +292,16 @@ function createChartSheets(computeSheetName = COMPUTE_SHEET) {
   // 0 is the first in the dimensions table on the survey template sheet
   // Plot _LINES_PER_CHART dimensions per chart,
   // so increment starting dimension by _LINES_PER_CHART.
-  for (var dimensionStart = 0; dimensionStart < dimensionsCount; dimensionStart += _LINES_PER_CHART) {
+  for (
+    var dimensionStart = 0;
+    dimensionStart < dimensionsCount;
+    dimensionStart += _LINES_PER_CHART
+  ) {
     // Ugly modular math to figure out how many dimensions left to plot.
-    var dimensionsOnChart = (dimensionsCount - dimensionStart >= _LINES_PER_CHART) ? _LINES_PER_CHART : dimensionsCount % _LINES_PER_CHART
+    var dimensionsOnChart =
+      dimensionsCount - dimensionStart >= _LINES_PER_CHART
+        ? _LINES_PER_CHART
+        : dimensionsCount % _LINES_PER_CHART
     // For each dimension,
     // and each sentiment,
     // we have an avg and an SD.
@@ -263,20 +317,22 @@ function createChartSheets(computeSheetName = COMPUTE_SHEET) {
       // For this chunk of _LINES_PER_CHART dimensions,
       // and for this sentiment
       // which column do we start with on the compute sheet.
-      var columnStart = _CS_COLUMN_DIMENSIONS_START + dimensionStart * dimensionColumnWidth + s * 2
+      var columnStart =
+        _CS_COLUMN_DIMENSIONS_START +
+        dimensionStart * dimensionColumnWidth +
+        s * 2
       const rangeList = [xAxisLabels].concat(
         Array.from(
           // d count the internal dimension within the current chunk of _LINES_PER_CHART dimensions
-          { length: dimensionsOnChart }, (_, d) =>
-          `${INTEGERS_TO_COLUMNS[columnStart + d * dimensionColumnWidth]}1:${INTEGERS_TO_COLUMNS[columnStart + d * dimensionColumnWidth]}`
-        )
+          { length: dimensionsOnChart },
+          (_, d) =>
+            `${INTEGERS_TO_COLUMNS[columnStart + d * dimensionColumnWidth]}1:${INTEGERS_TO_COLUMNS[columnStart + d * dimensionColumnWidth]}`,
+        ),
       )
       const ranges = computeSheet.getRangeList(rangeList).getRanges()
       Logger.log(`Creating chart "${title}" from ranges ${rangeList}`)
       const chart = createChartFromRangeList(computeSheet, title, ranges)
-      spreadsheet
-        .moveChartToObjectSheet(chart)
-        .setName(title)
+      spreadsheet.moveChartToObjectSheet(chart).setName(title)
     }
   }
 }
@@ -287,10 +343,16 @@ function createChartSheets(computeSheetName = COMPUTE_SHEET) {
  */
 function getChartSheets() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  const surveyTemplateSheet = unwrap(spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET))
-  const dimensionsCount = getSurveyDimensionsCount(surveyTemplateSheet);
+  const surveyTemplateSheet = unwrap(
+    spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET),
+  )
+  const dimensionsCount = getSurveyDimensionsCount(surveyTemplateSheet)
   var chartSheets = []
-  for (var dimensionStart = 0; dimensionStart < dimensionsCount; dimensionStart += _LINES_PER_CHART) {
+  for (
+    var dimensionStart = 0;
+    dimensionStart < dimensionsCount;
+    dimensionStart += _LINES_PER_CHART
+  ) {
     const sentiments = Object.keys(SURVEY_SENTIMENTS)
     for (const s in sentiments) {
       const title = `${sentiments[s]} ${1 + Math.floor(dimensionStart / _LINES_PER_CHART)}`
@@ -310,19 +372,26 @@ function updateCompute(name = COMPUTE_SHEET) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   var namesAndDates = getNamesAndDates(spreadsheet).sort()
   // Insert the sheet names in the target range to trigger computes...
-  var computeSheetTriggerRangeName = (
-    name + "!" +
-    COMPUTE_SHEET_TRIGGER_CELL_NAME_COLUMN + COMPUTE_SHEET_TRIGGER_CELL_ROW.toString() + ":" +
-    COMPUTE_SHEET_TRIGGER_CELL_DATE_COLUMN + (COMPUTE_SHEET_TRIGGER_CELL_ROW + namesAndDates.length - 1).toString()
+  var computeSheetTriggerRangeName =
+    name +
+    "!" +
+    COMPUTE_SHEET_TRIGGER_CELL_NAME_COLUMN +
+    COMPUTE_SHEET_TRIGGER_CELL_ROW.toString() +
+    ":" +
+    COMPUTE_SHEET_TRIGGER_CELL_DATE_COLUMN +
+    (COMPUTE_SHEET_TRIGGER_CELL_ROW + namesAndDates.length - 1).toString()
+  var computeSheetTriggerRange = spreadsheet.getRange(
+    computeSheetTriggerRangeName,
   )
-  var computeSheetTriggerRange = spreadsheet.getRange(computeSheetTriggerRangeName)
   computeSheetTriggerRange.setValues(namesAndDates)
   // ... and clear the contents of any cells below the ranage.
-  var clearRangeName = (
-    name + "!" +
-    COMPUTE_SHEET_TRIGGER_CELL_NAME_COLUMN + (COMPUTE_SHEET_TRIGGER_CELL_ROW + namesAndDates.length).toString() + ":" +
+  var clearRangeName =
+    name +
+    "!" +
+    COMPUTE_SHEET_TRIGGER_CELL_NAME_COLUMN +
+    (COMPUTE_SHEET_TRIGGER_CELL_ROW + namesAndDates.length).toString() +
+    ":" +
     COMPUTE_SHEET_TRIGGER_CELL_DATE_COLUMN
-  )
   var clearRange = spreadsheet.getRange(clearRangeName)
   clearRange.clearContent()
 }

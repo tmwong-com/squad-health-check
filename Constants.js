@@ -10,15 +10,12 @@ const SQUAD_HEALTH_CHECK_SHEET_PREFIX = "Squad Health Check"
  * plus a dummy at 0 because of 0-index vs. 1-index BS.
  */
 const INTEGERS_TO_COLUMNS = Object.freeze(
-  Array
-    .from(
-      { length: 27 }, (_, i) =>
-        String.fromCharCode('A'.charCodeAt(0) - 1 + i)
-    )
-    .concat(
-      Array.from(
-        { length: 26 }, (_, i) =>
-          `A${String.fromCharCode('A'.charCodeAt(0) + i)}`
-      )
-    )
+  Array.from({ length: 27 }, (_, i) =>
+    String.fromCharCode("A".charCodeAt(0) - 1 + i),
+  ).concat(
+    Array.from(
+      { length: 26 },
+      (_, i) => `A${String.fromCharCode("A".charCodeAt(0) + i)}`,
+    ),
+  ),
 )

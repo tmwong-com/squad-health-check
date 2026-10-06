@@ -21,7 +21,10 @@ function runSurveyTemplateTests() {
  * Tests whether one or more elements of an array is blank.
  */
 function arrayIsBlank(data) {
-  return data.reduce((accumulator, currentValue) => accumulator || (currentValue.length == 0), false)
+  return data.reduce(
+    (accumulator, currentValue) => accumulator || currentValue.length == 0,
+    false,
+  )
 }
 
 /**
@@ -32,15 +35,21 @@ function test_computeFormulasCoverAllDimensions(sheet) {
   const formulas = _createComputeFormulas(dimensionsCount)
   // One formula for count of respondees
   // plus for each dimension a pair of average and SD for each sentiment
-  const expectedFormulasLength = 1 + (dimensionsCount * getSurveySentimentsCount() * 2)
-  return (expectedFormulasLength == formulas.length)
+  const expectedFormulasLength =
+    1 + dimensionsCount * getSurveySentimentsCount() * 2
+  return expectedFormulasLength == formulas.length
 }
 
 /**
  * Test that the DIMENSIONS_{COLUMN, ROW}_START constants point to the start of the dimensions table.
  */
 function test_dimensionsTableExists(sheet) {
-  var data = sheet.getSheetValues(SURVEY_TEMPLATE_DIMENSIONS_ROW_START - 1, SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START, 1, SURVEY_DIMENSIONS_HEADER.length)[0]
+  var data = sheet.getSheetValues(
+    SURVEY_TEMPLATE_DIMENSIONS_ROW_START - 1,
+    SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START,
+    1,
+    SURVEY_DIMENSIONS_HEADER.length,
+  )[0]
   return (
     data[0] == "Dimension" &&
     data[1] == "Good" &&
@@ -54,7 +63,7 @@ function test_dimensionsTableExists(sheet) {
  */
 function test_dimensionsTableHasDimensions(sheet) {
   var count = getSurveyDimensionsCount(sheet)
-  return (typeof (count) == "number" && count > 0)
+  return typeof count == "number" && count > 0
 }
 
 /**
@@ -65,9 +74,11 @@ function test_getSurveyResultSheetNameAndDate(_) {
   const nameAndDate = SQUAD_HEALTH_CHECK_SHEET_PREFIX + " 2025-01-01"
   const expected = [nameAndDate, "2025-01-01"]
   const got = _getNameAndDate(nameAndDate)
-  return (expected.toString() == _getNameAndDate(SQUAD_HEALTH_CHECK_SHEET_PREFIX + " 2025-01-01").toString())
+  return (
+    expected.toString() ==
+    _getNameAndDate(SQUAD_HEALTH_CHECK_SHEET_PREFIX + " 2025-01-01").toString()
+  )
 }
-
 
 /**
  * Test that all of the dimension table elements are non-blank.
@@ -75,10 +86,17 @@ function test_getSurveyResultSheetNameAndDate(_) {
 function test_dimensionsTableNoBlanks(sheet) {
   var dimensionsCount = getSurveyDimensionsCount(sheet)
   try {
-    var dimensions = sheet.getSheetValues(SURVEY_TEMPLATE_DIMENSIONS_ROW_START, SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START, dimensionsCount, 4)
-    return !dimensions.reduce((accumulator, currentValue) => accumulator || arrayIsBlank(currentValue), false)
-  }
-  catch {
+    var dimensions = sheet.getSheetValues(
+      SURVEY_TEMPLATE_DIMENSIONS_ROW_START,
+      SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START,
+      dimensionsCount,
+      4,
+    )
+    return !dimensions.reduce(
+      (accumulator, currentValue) => accumulator || arrayIsBlank(currentValue),
+      false,
+    )
+  } catch {
     // If getSheetValues throws an exception,
     // one of the elements in the row is probably an image instead of a string
     // because of an indexing error during sheet creation.
@@ -94,7 +112,7 @@ function test_sheetEndsAfterDimensions(sheet) {
     1 + // The description
     1 + // The dimensions table header
     getSurveyDimensionsCount(sheet) // The dimensions
-  return (expectedSheetLength == sheet.getLastRow())
+  return expectedSheetLength == sheet.getLastRow()
 }
 
 /**
@@ -130,7 +148,10 @@ const TESTS_TEMPLATE_SHEET = [
 
 function tests_dimensionHeadersAndContentsConsistent(_) {
   return !Object.keys(SURVEY_DIMENSIONS).reduce(
-    (accumulator, dimension) => accumulator || SURVEY_DIMENSIONS[dimension].length != SURVEY_DIMENSIONS_HEADER.length, false
+    (accumulator, dimension) =>
+      accumulator ||
+      SURVEY_DIMENSIONS[dimension].length != SURVEY_DIMENSIONS_HEADER.length,
+    false,
   )
 }
 

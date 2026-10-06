@@ -5,13 +5,14 @@ Squad Health Check developer notes
 
 To develop and test the Squad Health Check editor add-on, create a new Google Apps Script project linked to an empty Google Sheets spreadsheet. We assume that you have [enabled the Google Apps Script API](https://developers.google.com/apps-script/api/quickstart/js#enable-api) in your workspace and [installed `Node.js` and `npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-* Set up the Apps Script `clasp` CLI tool: `make env`
-* Log in to the Apps Script API: `make login`
-* Create a new Apps Script project and empty Google Sheets spreadsheet: `make project`. The new project name is "Squad Health Check" by default; set the `PROJECT_NAME` environment variable to override the default. This command creates the project metadata file `.clasp.json` in the repository and links the local files to the new Apps Script project.
+- Set up the Apps Script `clasp` CLI tool: `make env`
+- Log in to the Apps Script API: `make login`
+- Create a new Apps Script project and empty Google Sheets spreadsheet: `make project`. The new project name is "Squad Health Check" by default; set the `PROJECT_NAME` environment variable to override the default. This command creates the project metadata file `.clasp.json` in the repository and links the local files to the new Apps Script project.
 
 After running these steps, you should have:
-* A new project in the [Apps Script dashboard](https://script.google.com/home)
-* A new empty Google Sheets spreadsheet with the same name as the project
+
+- A new project in the [Apps Script dashboard](https://script.google.com/home)
+- A new empty Google Sheets spreadsheet with the same name as the project
 
 ### `appsscript.json`
 
@@ -19,10 +20,21 @@ After running these steps, you should have:
 
 ## Development `make` targets
 
-* `login`: Log in to the Apps Script API
-* `push`: Push local changes to Apps Script files (including `*.js` and `appsscript.json`) to the remote project
-* `pull`: Pull remote changes made in the Apps Script console into the local repository
+- `login`: Log in to the Apps Script API
+- `push`: Push local changes to Apps Script files (including `*.js` and `appsscript.json`) to the remote project
+- `pull`: Pull remote changes made in the Apps Script console into the local repository
 
 ## Internationalization
 
 To account for locales that use semicolons (`;`) instead of commas (`,`) as function argument separators, formulas generated programmatically use `;`. The Google Sheets backend then converts them to the locale-appropriate separator when evaluating the sheet.
+
+## Formatting
+
+Run `npm install` to install the local Prettier development dependency.
+Use `npm run format` to format files or `npm run format:check` to check formatting
+without modifying files.
+
+In VS Code, install the recommended Prettier extension (`esbenp.prettier-vscode`).
+The workspace selects it as the default formatter and uses the local Prettier
+installation. Both VS Code and the command-line scripts use `.prettierrc.json`
+and `.prettierignore` so that formatting rules stay consistent.
