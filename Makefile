@@ -5,6 +5,9 @@ env:
 	@npm install @google/clasp
 	@echo Installed clasp v$(shell npx @google/clasp --version)
 
+format:
+	npx prettier --write .
+
 login:
 	npx @google/clasp login
 

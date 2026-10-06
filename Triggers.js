@@ -32,12 +32,15 @@ function onOpen(event) {
  * Install the Squad Health Check template sheets for the user.
  */
 function runInstallTemplateSheets() {
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp.getUi()
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  if (spreadsheet.getSheetByName(COMPUTE_SHEET) || spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET)) {
+  if (
+    spreadsheet.getSheetByName(COMPUTE_SHEET) ||
+    spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET)
+  ) {
     ui.alert(
       `Cannot install Squad Health Check template sheets because '${SURVEY_TEMPLATE_SHEET}' and/or '${COMPUTE_SHEET}' sheets already exist. ` +
-      `If you wish to reinstall the template sheets, delete or rename the existing sheets first.`
+        `If you wish to reinstall the template sheets, delete or rename the existing sheets first.`,
     )
     return
   }
@@ -50,9 +53,9 @@ function runInstallTemplateSheets() {
       createSurveyTemplateSheet()
       createComputeSheet()
       updateCompute()
-      break;
+      break
     default:
-      break;
+      break
   }
 }
 
@@ -60,7 +63,7 @@ function runInstallTemplateSheets() {
  * Install the chart sheets for the user.
  */
 function runInstallCharts() {
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp.getUi()
   const chartSheets = getChartSheets()
   if (chartSheets.length) {
     const button = ui.alert(
@@ -69,9 +72,9 @@ function runInstallCharts() {
     )
     switch (button) {
       case ui.Button.NO:
-        return;
+        return
       default:
-        break;
+        break
     }
   }
   createChartSheets()
@@ -84,17 +87,20 @@ function runInstallCharts() {
  */
 function runGenerateSurveyFormPrompt() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  const ui = SpreadsheetApp.getUi();
+  const ui = SpreadsheetApp.getUi()
   const surveyTemplateSheet = spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET)
-  if (runSurveyTemplateSheetTests(surveyTemplateSheet) == 0 || !spreadsheet.getSheetByName(COMPUTE_SHEET)) {
+  if (
+    runSurveyTemplateSheetTests(surveyTemplateSheet) == 0 ||
+    !spreadsheet.getSheetByName(COMPUTE_SHEET)
+  ) {
     const response = ui.prompt(
       "Generate a new survey form",
       "Please enter the date in YYYY-MM-DD format for the Squad Health Check:",
       ui.ButtonSet.OK_CANCEL,
     )
     // Process the user's response.
-    const button = response.getSelectedButton();
-    const date = response.getResponseText();
+    const button = response.getSelectedButton()
+    const date = response.getResponseText()
     switch (button) {
       case ui.Button.OK:
         if (!validateDate(date)) {
@@ -115,9 +121,9 @@ function runGenerateSurveyFormPrompt() {
   } else {
     ui.alert(
       `Detected inconsistencies in the Squad Health Check '${SURVEY_TEMPLATE_SHEET}' and/or '${COMPUTE_SHEET}' sheets. ` +
-      `Delete any existing copies of the '${SURVEY_TEMPLATE_SHEET}' and '${COMPUTE_SHEET}' sheets, ` +
-      `run '${INSTALL_TEMPLATES_MENU_OPTION}', ` +
-      `and then run '${GENERATE_SURVEY_MENU_OPTION}' again.`,
+        `Delete any existing copies of the '${SURVEY_TEMPLATE_SHEET}' and '${COMPUTE_SHEET}' sheets, ` +
+        `run '${INSTALL_TEMPLATES_MENU_OPTION}', ` +
+        `and then run '${GENERATE_SURVEY_MENU_OPTION}' again.`,
       ui.ButtonSet.OK,
     )
   }

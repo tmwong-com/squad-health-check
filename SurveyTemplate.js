@@ -1,6 +1,6 @@
 /**
  * Survey template static content.
- * 
+ *
  * Apologies for the long lines,
  * but it's programmatically cleaner
  * than trying to remove unnecessary newlines.
@@ -21,7 +21,8 @@ The Squad Health Check is a way for teams to gauge their perception of productiv
 Original blog post: https://engineering.atspotify.com/2014/09/squad-health-check-model
 Follow-up post: https://engineering.atspotify.com/2023/03/getting-more-from-your-team-health-checks
 TeamRetro Squad Health Check: https://www.teamretro.com/health-checks/squad-health-check`.trim()
-const SURVEY_DESCRIPTION_COMMENT = "⬅ This description will appear at the top of every generated survey"
+const SURVEY_DESCRIPTION_COMMENT =
+  "⬅ This description will appear at the top of every generated survey"
 
 /**
  * The row and column of the cell
@@ -38,7 +39,8 @@ const SURVEY_DIMENSIONS_HEADER = Object.freeze([
   "Icon URL",
 ])
 
-const SURVEY_ICON_URL_PREFIX = "https://www.tmwong.org/squad-health-check/images/"
+const SURVEY_ICON_URL_PREFIX =
+  "https://www.tmwong.org/squad-health-check/images/"
 
 /**
  * The dimensions used to quantify team productivity, performance, and purpose.
@@ -133,16 +135,8 @@ const SURVEY_TEMPLATE_DIMENSIONS_ROW_START = 3
  * - Trend: Where the team thinks a dimension is headed (improving or deteriorating)
  */
 const SURVEY_SENTIMENTS = Object.freeze({
-  Perception: [
-    "Good 🙂",
-    "Neutral 😐",
-    "Bad 🙁",
-  ],
-  Trend: [
-    "Improving ↗️",
-    "Stable ➡️",
-    "Deteriorating ↘️",
-  ],
+  Perception: ["Good 🙂", "Neutral 😐", "Bad 🙁"],
+  Trend: ["Improving ↗️", "Stable ➡️", "Deteriorating ↘️"],
 })
 
 const SURVEY_TREND_DESCRIPTION =
@@ -157,7 +151,9 @@ const SURVEY_TREND_DESCRIPTION =
  */
 function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
   Logger.log(`Creating '${name}' sheet...`)
-  const surveyTemplateSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(name, 0).activate()
+  const surveyTemplateSheet = SpreadsheetApp.getActiveSpreadsheet()
+    .insertSheet(name, 0)
+    .activate()
   SpreadsheetApp.flush()
   Logger.log(`Populating "${name}" headers...`)
   var rowIndex = 1
@@ -168,9 +164,11 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
     .setValue(SURVEY_DESCRIPTION)
     .setVerticalAlignment("top")
     .setWrap(true)
-  surveyTemplateSheet.getRange(rowIndex, _CS_COLUMN_A, 1, SURVEY_DIMENSIONS_HEADER.length)
+  surveyTemplateSheet
+    .getRange(rowIndex, _CS_COLUMN_A, 1, SURVEY_DIMENSIONS_HEADER.length)
     .merge()
-  surveyTemplateSheet.getRange(rowIndex, _CS_COLUMN_A + SURVEY_DIMENSIONS_HEADER.length)
+  surveyTemplateSheet
+    .getRange(rowIndex, _CS_COLUMN_A + SURVEY_DIMENSIONS_HEADER.length)
     .setValue(SURVEY_DESCRIPTION_COMMENT)
     .setWrap(true)
   rowIndex++
@@ -188,8 +186,7 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
     .protect()
     .setDescription(`Protect "${name}" against accidental modification`)
     .setWarningOnly(true)
-  surveyTemplateSheet
-    .setFrozenRows(rowIndex)
+  surveyTemplateSheet.setFrozenRows(rowIndex)
   rowIndex++
   for (const d in SURVEY_DIMENSIONS) {
     Logger.log(`Populating "${name}" dimension "${d}"...`)
@@ -201,16 +198,12 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
       .setWrap(true)
     const iconUrl = SURVEY_DIMENSIONS[d][3]
     try {
-      const icon =
-        SpreadsheetApp.newCellImage()
-          .setSourceUrl(iconUrl)
-          .build();
+      const icon = SpreadsheetApp.newCellImage().setSourceUrl(iconUrl).build()
       surveyTemplateSheet
         // Remember that the icon preview comes _after_ the dimension data.
         .getRange(rowIndex, SURVEY_DIMENSIONS_HEADER.length + 1)
         .setValue(icon)
-    }
-    catch (e) {
+    } catch (e) {
       Logger.log(`WARNING: Unable to load icon at "${iconUrl}"...`)
     }
     rowIndex++
@@ -225,7 +218,12 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
  */
 function getSurveyDescription(sheet) {
   var sheet = unwrap(sheet)
-  return sheet.getRange(SURVEY_TEMPLATE_DESCRIPTION_ROW, SURVEY_TEMPLATE_DESCRIPTION_COLUMN).getValue()
+  return sheet
+    .getRange(
+      SURVEY_TEMPLATE_DESCRIPTION_ROW,
+      SURVEY_TEMPLATE_DESCRIPTION_COLUMN,
+    )
+    .getValue()
 }
 
 /**

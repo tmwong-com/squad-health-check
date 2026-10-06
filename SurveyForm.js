@@ -16,9 +16,9 @@ function unwrap(value) {
 }
 
 /**
- * 
+ *
  * Functions for processing survey names and dates.
- * 
+ *
  */
 
 /**
@@ -30,7 +30,10 @@ function _getNameAndDate(nameAndDate) {
   const name = nameAndDate
   const date = name.match(SURVEY_DATE_REGEXP)
   if (date.length < 1) {
-    throw Error("Got invalid survey result sheet name: Expected a name with a YYYY-MM-DD date, got " + name)
+    throw Error(
+      "Got invalid survey result sheet name: Expected a name with a YYYY-MM-DD date, got " +
+        name,
+    )
   }
   return [name, date[0]]
 }
@@ -43,9 +46,14 @@ function _getNameAndDate(nameAndDate) {
  */
 function getNamesAndDates(spreadsheet) {
   var namesAndDates = new Array()
-  var sheet = spreadsheet.getSheets();
+  var sheet = spreadsheet.getSheets()
   for (var i = 0; i < sheet.length; i++) {
-    if (sheet[i].getName().toLowerCase().startsWith(SQUAD_HEALTH_CHECK_SHEET_PREFIX.toLowerCase())) {
+    if (
+      sheet[i]
+        .getName()
+        .toLowerCase()
+        .startsWith(SQUAD_HEALTH_CHECK_SHEET_PREFIX.toLowerCase())
+    ) {
       namesAndDates.push(_getNameAndDate(sheet[i].getName()))
     }
   }
@@ -85,15 +93,15 @@ function makeName(dateString) {
  */
 function validateDate(dateString) {
   if (!SURVEY_DATE_REGEXP.test(dateString)) {
-    return false; // Format does not match
+    return false // Format does not match
   }
-  return !isNaN((new Date(dateString)).getTime()); // Check if the date is valid
+  return !isNaN(new Date(dateString).getTime()) // Check if the date is valid
 }
 
 /**
- * 
+ *
  * Functions for generating a new Google Forms survey.
- * 
+ *
  */
 
 /**
@@ -106,7 +114,8 @@ function validateDate(dateString) {
  */
 function _getInCellIconBlob(sheet, row) {
   // Remember that the icon preview comes _after_ the dimension data.
-  const iconColumn = SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START + SURVEY_DIMENSIONS_HEADER.length
+  const iconColumn =
+    SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START + SURVEY_DIMENSIONS_HEADER.length
   const cellValue = sheet.getRange(row, iconColumn).getValue()
   if (cellValue != null && typeof cellValue.getContentUrl === "function") {
     return UrlFetchApp.fetch(cellValue.getContentUrl()).getBlob()
@@ -127,17 +136,27 @@ function _getInCellIconBlob(sheet, row) {
  *   image to fall back on if the icon URL is stale.
  * @param {number} templateRow The row in the template sheet for this dimension.
  */
-function _addDimension(form, data, includeIcons = true, templateSheet = null, templateRow = null) {
+function _addDimension(
+  form,
+  data,
+  includeIcons = true,
+  templateSheet = null,
+  templateRow = null,
+) {
   const dimension = unwrap(data[0])
   const good = unwrap(data[1])
   const bad = unwrap(data[2])
-  Logger.log("Adding dimension: '%s' Good: '%s' Bad: '%s'...", dimension, good, bad)
+  Logger.log(
+    "Adding dimension: '%s' Good: '%s' Bad: '%s'...",
+    dimension,
+    good,
+    bad,
+  )
   const descriptions = {
     Perception: "Good: " + good + "\n" + "Bad: " + bad,
-    Trend: SURVEY_TREND_DESCRIPTION
+    Trend: SURVEY_TREND_DESCRIPTION,
   }
-  const dimensionItem = form.addImageItem()
-    .setTitle(dimension)
+  const dimensionItem = form.addImageItem().setTitle(dimension)
   if (includeIcons) {
     // Icon loading is best-effort: a stale icon URL or unreadable cell image
     // must never prevent survey generation.
@@ -148,9 +167,10 @@ function _addDimension(form, data, includeIcons = true, templateSheet = null, te
       if (iconUrl) {
         try {
           icon = UrlFetchApp.fetch(iconUrl).getBlob()
-        }
-        catch (e) {
-          Logger.log(`WARNING: Unable to load icon at "${iconUrl}", error: ${e}; falling back to in-cell icon image...`)
+        } catch (e) {
+          Logger.log(
+            `WARNING: Unable to load icon at "${iconUrl}", error: ${e}; falling back to in-cell icon image...`,
+          )
         }
       }
       if (icon == null && templateSheet != null && templateRow != null) {
@@ -158,18 +178,21 @@ function _addDimension(form, data, includeIcons = true, templateSheet = null, te
       }
       if (icon != null) {
         dimensionItem.setImage(icon)
+      } else {
+        Logger.log(
+          `WARNING: No icon available for dimension "${dimension}", continuing without one...`,
+        )
       }
-      else {
-        Logger.log(`WARNING: No icon available for dimension "${dimension}", continuing without one...`)
-      }
-    }
-    catch (e) {
-      Logger.log(`WARNING: Unable to load icon at "${iconUrl}" or from the template sheet, error: ${e}; continuing without one...`)
+    } catch (e) {
+      Logger.log(
+        `WARNING: Unable to load icon at "${iconUrl}" or from the template sheet, error: ${e}; continuing without one...`,
+      )
     }
   }
   const sentiments = Object.keys(SURVEY_SENTIMENTS)
   for (const sentiment of sentiments) {
-    form.addMultipleChoiceItem()
+    form
+      .addMultipleChoiceItem()
       .setTitle(dimension + ": " + sentiment)
       .setHelpText(descriptions[sentiment])
       .setChoiceValues(SURVEY_SENTIMENTS[sentiment])
@@ -189,9 +212,7 @@ function _addDestination(spreadsheet, form, name) {
   // Flush required to force creation of the new survey responses sheet
   SpreadsheetApp.flush()
   // A new survey responses sheet is always the first sheet in a spreadsheet.
-  spreadsheet
-    .getSheets()[0]
-    .setName(name).activate()
+  spreadsheet.getSheets()[0].setName(name).activate()
 }
 
 /**
@@ -202,7 +223,7 @@ function _addDestination(spreadsheet, form, name) {
  */
 function generateSurveyForm(name) {
   var name = unwrap(name)
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const sheet = unwrap(spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET))
   Logger.log("Creating survey form from template sheet " + sheet.getName())
   // Create the form...
@@ -216,8 +237,18 @@ function generateSurveyForm(name) {
   // ... and add each dimension.
   // Remember that sheet rows and columns are 1-indexed,
   // but JavaScript array rows and columns are 0-indexed.
-  for (var dimensionRow = SURVEY_TEMPLATE_DIMENSIONS_ROW_START; dimensionRow < SURVEY_TEMPLATE_DIMENSIONS_ROW_START + getSurveyDimensionsCount(sheet); dimensionRow++) {
-    var data = sheet.getSheetValues(dimensionRow, SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START, 1, SURVEY_DIMENSIONS_HEADER.length)[0]
+  for (
+    var dimensionRow = SURVEY_TEMPLATE_DIMENSIONS_ROW_START;
+    dimensionRow <
+    SURVEY_TEMPLATE_DIMENSIONS_ROW_START + getSurveyDimensionsCount(sheet);
+    dimensionRow++
+  ) {
+    var data = sheet.getSheetValues(
+      dimensionRow,
+      SURVEY_TEMPLATE_DIMENSIONS_COLUMN_START,
+      1,
+      SURVEY_DIMENSIONS_HEADER.length,
+    )[0]
     _addDimension(form, data, true, sheet, dimensionRow)
   }
   // Set the destination of survey responses to point back at the current spreadsheet.
