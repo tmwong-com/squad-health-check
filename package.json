@@ -4,8 +4,5 @@
   },
   "dependencies": {
     "@google/clasp": "^3.4.1"
-  },
-  "overrides": {
-    "braces": "$braces"
   }
 }
