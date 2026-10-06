@@ -20,6 +20,13 @@ After running these steps, you should have:
 
 ## Development `make` targets
 
+Code sanity targets:
+
+- `format`: Format project files with Prettier
+- `lint`: Run ESLint on the project JavaScript files
+
+Google Apps Script project management targets:
+
 - `login`: Log in to the Apps Script API
 - `push`: Push local changes to Apps Script files (including `*.js` and `appsscript.json`) to the remote project
 - `pull`: Pull remote changes made in the Apps Script console into the local repository
@@ -31,10 +38,16 @@ To account for locales that use semicolons (`;`) instead of commas (`,`) as func
 ## Formatting
 
 Run `npm install` to install the local Prettier development dependency.
-Use `npm run format` to format files or `npm run format:check` to check formatting
-without modifying files.
+Use `make format` or `npm run format` to format files. Use `npm run format:check`
+to check formatting without modifying files.
 
 In VS Code, install the recommended Prettier extension (`esbenp.prettier-vscode`).
 The workspace selects it as the default formatter and uses the local Prettier
 installation. Both VS Code and the command-line scripts use `.prettierrc.json`
 and `.prettierignore` so that formatting rules stay consistent.
+
+## Linting
+
+Run `npm install` to install the local ESLint development dependency.
+Use `make lint` or `npm run lint` to check JavaScript files without modifying them.
+In VS Code, install the recommended ESLint extension (`dbaeumer.vscode-eslint`).

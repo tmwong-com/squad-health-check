@@ -74,10 +74,7 @@ function test_getSurveyResultSheetNameAndDate(_) {
   const nameAndDate = SQUAD_HEALTH_CHECK_SHEET_PREFIX + " 2025-01-01"
   const expected = [nameAndDate, "2025-01-01"]
   const got = _getNameAndDate(nameAndDate)
-  return (
-    expected.toString() ==
-    _getNameAndDate(SQUAD_HEALTH_CHECK_SHEET_PREFIX + " 2025-01-01").toString()
-  )
+  return expected.toString() == got.toString()
 }
 
 /**
@@ -178,13 +175,10 @@ function _runTests(tests, sheet = null) {
  * @return {number} The number of unit tests that failed.
  */
 function runSurveyTemplateSheetTests(sheet) {
-  var failed = 0
   if (sheet) {
-    failed = _runTests(TESTS_TEMPLATE_SHEET, sheet)
-  } else {
-    failed = 1
+    return _runTests(TESTS_TEMPLATE_SHEET, sheet)
   }
-  return failed
+  return 1
 }
 
 /**

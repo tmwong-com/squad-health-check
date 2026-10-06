@@ -1,7 +1,7 @@
 /**
  * The format and regular expression for a survey date.
  */
-const SURVEY_DATE_REGEXP = /\d{4}\-[0-1][0-9]\-[0-3][0-9]$/
+const SURVEY_DATE_REGEXP = /\d{4}-[0-1][0-9]-[0-3][0-9]$/
 
 /**
  * Unwrap a nullable value to raise an exception if the value is null.
@@ -222,7 +222,7 @@ function _addDestination(spreadsheet, form, name) {
  * @customfunction
  */
 function generateSurveyForm(name) {
-  var name = unwrap(name)
+  name = unwrap(name)
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const sheet = unwrap(spreadsheet.getSheetByName(SURVEY_TEMPLATE_SHEET))
   Logger.log("Creating survey form from template sheet " + sheet.getName())
