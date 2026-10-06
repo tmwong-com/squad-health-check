@@ -1,5 +1,4 @@
 name: "Run lint on Squad Health Check code"
-description: "Run a lint check on the Squad Health Check code to ensure code quality and consistency"
 
 on:
   pull_request:

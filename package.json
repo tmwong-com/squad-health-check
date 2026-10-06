@@ -3,9 +3,9 @@
     "fsevents@2.3.3": true
   },
   "scripts": {
-    "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@google/clasp": "^3.4.1"
