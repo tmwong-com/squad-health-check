@@ -6,6 +6,24 @@ const _CROSSCHECK_SHEET_NAME = "Crosscheck sheet"
 const _FIXTURE_SURVEY_NAME = "Squad Health Check 2025-08-26"
 
 /**
+ * Create a new compute sheet
+ * and test the formulas in the sheet.
+ * This test is runnable from within the Apps Script editor,
+ * and will delete the sheet
+ * if all the unit tests pass.
+ * @param {string} surveyTemplateSheetName The name of the survey template sheet to use
+ *  when creating the compute sheet.
+ */
+function runComputeSheetTests(surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
+  const computeSheetName = `Compute ${Utilities.getUuid()}`
+  const computeSheet = createComputeSheet(computeSheetName, surveyTemplateSheetName)
+  updateCompute(computeSheetName)
+  test_computeAverageAndSdPerDimension(computeSheetName)
+  Logger.log(`Deleting '${computeSheet.getName()}' sheet...`)
+  SpreadsheetApp.getActiveSpreadsheet().deleteSheet(computeSheet)
+}
+
+/**
  * Test that the formulas in a compute sheet
  * correctly calculate the average and standard deviation
  * of survey responses
@@ -61,19 +79,4 @@ function test_computeAverageAndSdPerDimension(computeSheetName = COMPUTE_SHEET) 
       }
     }
   }
-}
-
-/**
- * Create a new compute sheet
- * and test the formulas in the sheet.
- * Deletes the sheet after testing.
- * @param {string} surveyTemplateSheetName The name of the survey template sheet to use
- *  when creating the compute sheet.
- */
-function runComputeSheetTests(surveyTemplateSheetName = SURVEY_TEMPLATE_SHEET) {
-  const computeSheetName = `Compute ${Utilities.getUuid()}`
-  const computeSheet = createComputeSheet(computeSheetName, surveyTemplateSheetName)
-  updateCompute(computeSheetName)
-  test_computeAverageAndSdPerDimension(computeSheetName)
-  SpreadsheetApp.getActiveSpreadsheet().deleteSheet(computeSheet)
 }

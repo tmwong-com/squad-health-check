@@ -5,6 +5,19 @@
  */
 
 /**
+ * Create a survey template and run all tests,
+ * including the static content tests.
+ * This test function is runnable from within the Apps Script editor,
+ * and will delete the template
+ * if all the unit tests pass.
+ */
+function runSurveyTemplateTests() {
+  const sheet = runSurveyTemplateTestsKeepSheet()
+  Logger.log(`Deleting '${sheet.getName()}' sheet...`)
+  SpreadsheetApp.getActiveSpreadsheet().deleteSheet(sheet)
+}
+
+/**
  * Tests whether one or more elements of an array is blank.
  */
 function arrayIsBlank(data) {
@@ -164,21 +177,15 @@ function runSurveyTemplateStaticContentsTests() {
 /**
  * Create a survey template and run all tests,
  * including the static content tests.
- * This test function is runnable from within the Apps Script editor,
- * and will delete the template
- * if all the unit tests pass.
- * @param {boolean} keepTestSheet Whether to keep the test sheet after running the tests.
- * @return {string} The name of the created survey template sheet.
+ * @return {Sheet} The created survey template sheet.
  */
-function runSurveyTemplateTests(keepTestSheet = false) {
+function runSurveyTemplateTestsKeepSheet() {
   var failed = runSurveyTemplateStaticContentsTests()
   const name = `${SURVEY_TEMPLATE_SHEET} ${Utilities.getUuid()}`
   const sheet = createSurveyTemplateSheet(name)
   failed += runSurveyTemplateSheetTests(sheet)
   if (failed != 0) {
     throw Error(`${failed} test(s) failed`)
-  } else if (!keepTestSheet) {
-    SpreadsheetApp.getActiveSpreadsheet().deleteSheet(sheet)
   }
-  return name
+  return sheet
 }

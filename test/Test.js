@@ -2,6 +2,8 @@
  * Run compute sheet and survey template tests.
  */
 function runTests() {
-  const surveyTemplateSheetName = runSurveyTemplateTests(true)
-  runComputeSheetTests(surveyTemplateSheetName)
+  const surveyTemplateSheet = runSurveyTemplateTestsKeepSheet()
+  runComputeSheetTests(surveyTemplateSheet.getName())
+  Logger.log(`Deleting '${surveyTemplateSheet.getName()}' sheet...`)
+  SpreadsheetApp.getActiveSpreadsheet().deleteSheet(surveyTemplateSheet)
 }
