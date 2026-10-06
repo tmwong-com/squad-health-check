@@ -1,4 +1,7 @@
 {
+  "allowScripts": {
+    "fsevents@2.3.3": true
+  },
   "dependencies": {
     "@google/clasp": "^3.4.1"
   }
