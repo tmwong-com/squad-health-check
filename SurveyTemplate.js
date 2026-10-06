@@ -203,7 +203,7 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
         // Remember that the icon preview comes _after_ the dimension data.
         .getRange(rowIndex, SURVEY_DIMENSIONS_HEADER.length + 1)
         .setValue(icon)
-    } catch (e) {
+    } catch {
       Logger.log(`WARNING: Unable to load icon at "${iconUrl}"...`)
     }
     rowIndex++
@@ -217,7 +217,7 @@ function createSurveyTemplateSheet(name = SURVEY_TEMPLATE_SHEET) {
  * @return {string} The survey name prefix, typically is "Squad health check".
  */
 function getSurveyDescription(sheet) {
-  var sheet = unwrap(sheet)
+  sheet = unwrap(sheet)
   return sheet
     .getRange(
       SURVEY_TEMPLATE_DESCRIPTION_ROW,
@@ -235,7 +235,7 @@ function getSurveyDescription(sheet) {
  * @return {number} The count of dimensions defined in the template sheet.
  */
 function getSurveyDimensionsCount(sheet) {
-  var sheet = unwrap(sheet)
+  sheet = unwrap(sheet)
   return sheet.getLastRow() - SURVEY_TEMPLATE_DIMENSIONS_ROW_START + 1
 }
 

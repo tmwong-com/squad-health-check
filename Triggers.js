@@ -102,7 +102,7 @@ function runGenerateSurveyFormPrompt() {
     const button = response.getSelectedButton()
     const date = response.getResponseText()
     switch (button) {
-      case ui.Button.OK:
+      case ui.Button.OK: {
         if (!validateDate(date)) {
           ui.alert("Invalid date '" + date + "'; expected YYYY-MM-DD.")
           break
@@ -115,6 +115,7 @@ function runGenerateSurveyFormPrompt() {
         generateSurveyForm(surveyName)
         updateCompute()
         break
+      }
       default:
         break
     }
