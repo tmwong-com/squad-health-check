@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.requireConfig": true,
   "prettier.configPath": ".prettierrc.json",
+  "prettier.ignorePath": ".prettierignore",
   "prettier.prettierPath": "./node_modules/prettier",
-  "prettier.ignorePath": ".prettierignore"
+  "prettier.requireConfig": true
 }
