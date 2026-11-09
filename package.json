@@ -1,18 +1,19 @@
 {
-  "allowScripts": {
-    "fsevents@2.3.3": true
-  },
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint ."
   },
-  "dependencies": {
-    "@google/clasp": "^3.4.1"
+  "allowScripts": {
+    "fsevents@2.3.3": true
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@google/clasp": "^3.4.1",
     "eslint": "^10.12.0",
     "prettier": "^3.9.9"
+  },
+  "overrides": {
+    "zod": "^4.6.6"
   }
 }

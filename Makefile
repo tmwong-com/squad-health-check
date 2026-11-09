@@ -5,7 +5,7 @@ PROJECT_NAME ?= Squad Health Check
 .PHONY: env
 env:
 	@echo Installing @google/clasp...
-	@npm install @google/clasp
+	@npm install --save-dev @google/clasp
 	@echo Installed clasp v$(shell npx @google/clasp --version)
 
 # Code sanity checks
